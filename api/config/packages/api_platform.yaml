@@ -1,0 +1,14 @@
+api_platform:
+    title: Cinema API Platform & Symfony
+    version: 1.0.0
+    use_symfony_listeners: true
+    formats:
+        jsonld: ['application/ld+json']
+        json: [ 'application/json' ]
+    mercure:
+        include_type: true
+    # Good defaults for REST APIs
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
