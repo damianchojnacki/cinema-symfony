@@ -1,9 +1,9 @@
-import { Item } from "./item";
+import { Item } from './item'
 
 export class Reservation implements Item {
-  public "@id"?: string;
+  public '@id'?: string
 
-  constructor(
+  constructor (
     _id?: string,
     public seats?: any,
     public email?: string,
@@ -11,6 +11,6 @@ export class Reservation implements Item {
     public token?: string,
     public showing?: string
   ) {
-    this["@id"] = _id;
+    this['@id'] = _id
   }
 }

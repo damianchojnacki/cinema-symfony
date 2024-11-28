@@ -1,15 +1,15 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 const Layout = ({
-  children,
+  children
 }: {
-  children: ReactNode;
+  children: ReactNode
 }) => {
   return (
-    <main className="bg-gray-950 text-white min-h-screen">
+    <main className='bg-gray-950 text-white min-h-screen'>
       {children}
     </main>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

@@ -1,68 +1,68 @@
-import Link from "next/link";
-import { PagedCollection } from "@/types/collection";
+import Link from 'next/link'
+import { PagedCollection } from '@/types/collection'
 
 interface Props {
-  collection: PagedCollection<unknown>;
+  collection: PagedCollection<unknown>
   // eslint-disable-next-line no-unused-vars
-  getPagePath: (path: string) => string;
+  getPagePath: (path: string) => string
 }
 
 const Pagination = ({ collection, getPagePath }: Props) => {
-  const view = collection && collection["view"];
-  if (!view) return null;
+  const view = collection && collection.view
+  if (view == null) return null
 
   const {
-    "first": first,
-    "previous": previous,
-    "next": next,
-    "last": last,
-  } = view;
+    first,
+    previous,
+    next,
+    last
+  } = view
 
   return (
-    <div className="text-center">
+    <div className='text-center'>
       <nav
-        className="text-xs font-bold inline-flex mx-auto divide-x-2 divide-gray-200 flex-row flex-wrap items-center justify-center mb-4 border-2 border-gray-200 rounded-2xl overflow-hidden"
-        aria-label="Page navigation"
+        className='text-xs font-bold inline-flex mx-auto divide-x-2 divide-gray-200 flex-row flex-wrap items-center justify-center mb-4 border-2 border-gray-200 rounded-2xl overflow-hidden'
+        aria-label='Page navigation'
       >
         <Link
-          href={first ? getPagePath(first) : "#"}
+          href={first ? getPagePath(first) : '#'}
           className={`text-black p-3 hover:text-cyan-500 hover:bg-cyan-50 ${
-            previous ? "" : " text-gray-500 pointer-events-none"
+            previous ? '' : ' text-gray-500 pointer-events-none'
           }`}
-          aria-label="First page"
+          aria-label='First page'
         >
-          <span aria-hidden="true">&lArr;</span> First
+          <span aria-hidden='true'>&lArr;</span> First
         </Link>
         <Link
-          href={previous ? getPagePath(previous) : "#"}
+          href={previous ? getPagePath(previous) : '#'}
           className={`text-black p-3 hover:text-cyan-500 hover:bg-cyan-50 ${
-            previous ? "" : " text-gray-500 pointer-events-none"
+            previous ? '' : ' text-gray-500 pointer-events-none'
           }`}
-          aria-label="Previous page"
+          aria-label='Previous page'
         >
-          <span aria-hidden="true">&larr;</span> Previous
+          <span aria-hidden='true'>&larr;</span> Previous
         </Link>
         <Link
-          href={next ? getPagePath(next) : "#"}
+          href={next ? getPagePath(next) : '#'}
           className={`text-black p-3 hover:text-cyan-500 hover:bg-cyan-50 ${
-            next ? "" : " text-gray-500 pointer-events-none"
+            next ? '' : ' text-gray-500 pointer-events-none'
           }`}
-          aria-label="Next page"
+          aria-label='Next page'
         >
-          Next <span aria-hidden="true">&rarr;</span>
+          Next <span aria-hidden='true'>&rarr;</span>
         </Link>
         <Link
-          href={last ? getPagePath(last) : "#"}
+          href={last ? getPagePath(last) : '#'}
           className={`text-black p-3 hover:text-cyan-500 hover:bg-cyan-50 ${
-            next ? "" : "text-gray-500 pointer-events-none"
+            next ? '' : 'text-gray-500 pointer-events-none'
           }`}
-          aria-label="Last page"
+          aria-label='Last page'
         >
-          Last <span aria-hidden="true">&rArr;</span>
+          Last <span aria-hidden='true'>&rArr;</span>
         </Link>
       </nav>
     </div>
-  );
-};
+  )
+}
 
-export default Pagination;
+export default Pagination

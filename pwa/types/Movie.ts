@@ -1,9 +1,9 @@
-import { Item } from "./item";
+import { Item } from './item'
 
 export class Movie implements Item {
-  public "@id"?: string;
+  public '@id'?: string
 
-  constructor(
+  constructor (
     _id?: string,
     public id?: string,
     public title?: string,
@@ -11,8 +11,8 @@ export class Movie implements Item {
     public release_date?: Date,
     public rating?: string,
     public poster_url?: string,
-    public backdrop_url?: string,
+    public backdrop_url?: string
   ) {
-    this["@id"] = _id;
+    this['@id'] = _id
   }
 }

@@ -1,9 +1,9 @@
-import { Item } from "./item";
+import { Item } from './item'
 
 export class Showing implements Item {
-  public "@id"?: string;
+  public '@id'?: string
 
-  constructor(
+  constructor (
     _id?: string,
     public id?: number,
     public starts_at?: Date,
@@ -13,6 +13,6 @@ export class Showing implements Item {
     public reservations?: any,
     public seats_taken?: any
   ) {
-    this["@id"] = _id;
+    this['@id'] = _id
   }
 }
