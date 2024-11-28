@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace App\Service;
 
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

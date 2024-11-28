@@ -3,13 +3,15 @@
 namespace App\Tests\Api;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use ApiPlatform\Symfony\Bundle\Test\Response;
 use App\Entity\Reservation;
 use App\Factory\MovieFactory;
 use App\Factory\ReservationFactory;
 use App\Factory\ShowingFactory;
-use App\Utils\Storage;
+use App\Service\Storage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
@@ -29,14 +31,8 @@ class ReservationTest extends ApiTestCase
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
     }
 
-    public function test_creates_reservation(): void
+    public function test_creates_reservation_and_sends_email(): void
     {
-        //        $mailer = $this->createMock(MailerInterface::class);
-        //        $mailer->expects(self::once())
-        //            ->method('send');
-        //
-        //        self::getContainer()->set(MailerInterface::class, $mailer);
-
         $this->storage->fake();
 
         $movie = MovieFactory::new()
@@ -170,6 +166,8 @@ class ReservationTest extends ApiTestCase
                 ],
             ],
         ]);
+
+        $this->assertEmailCount(0);
     }
 
     public function test_validates_taken_seats(): void
@@ -204,5 +202,7 @@ class ReservationTest extends ApiTestCase
                 ],
             ],
         ]);
+
+        $this->assertEmailCount(0);
     }
 }

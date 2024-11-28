@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -25,7 +27,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     uriVariables: [
         'movieId' => new Link(toProperty: 'movie', fromClass: Movie::class),
     ],
-    normalizationContext: ['groups' => ['showing:list']],
+    normalizationContext: ['groups' => ['list']],
+    order: ['starts_at' => 'ASC'],
 )]
 #[ApiResource(
     operations: [
@@ -36,7 +39,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     uriVariables: [
         'id' => new Link(fromClass: Showing::class),
     ],
-    normalizationContext: ['groups' => ['showing:show']],
+    normalizationContext: ['groups' => ['show']],
 )]
 #[ORM\Entity]
 class Showing
@@ -44,19 +47,19 @@ class Showing
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[Groups(['showing:list', 'showing:show'])]
+    #[Groups(['list', 'show'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    #[Groups(['showing:list', 'showing:show'])]
+    #[Groups(['list', 'show'])]
     public DateTimeImmutable $starts_at;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[Groups(['showing:show'])]
+    #[Groups(['show'])]
     public int $rows;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[Groups(['showing:show'])]
+    #[Groups(['show'])]
     public int $columns;
 
     #[ORM\ManyToOne(targetEntity: Movie::class, inversedBy: 'showings')]
@@ -85,7 +88,7 @@ class Showing
             ],
         ]
     )]
-    #[Groups(['showing:show'])]
+    #[Groups(['show'])]
     #[SerializedName('seats_taken')]
     public function getSeatsTaken(): array
     {

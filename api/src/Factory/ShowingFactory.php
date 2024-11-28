@@ -35,7 +35,7 @@ final class ShowingFactory extends PersistentProxyObjectFactory
             'movie' => MovieFactory::new(),
             'rows' => rand(4, 8),
             'columns' => rand(6, 10),
-            'starts_at' => Carbon::now()->addDays(rand(0, 5))->setHour(rand(8, 22))->setMinutes([0, 15, 30, 45][rand(0, 3)])->setSeconds(0)->toDateTimeImmutable(),
+            'starts_at' => Carbon::now()->addDays(rand(1, 5))->setHour(rand(8, 22))->setMinutes([0, 15, 30, 45][rand(0, 3)])->setSeconds(0)->toDateTimeImmutable(),
         ];
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Factory;
 
 use App\Entity\Movie;
-use App\Utils\FakeFile;
-use App\Utils\Storage;
+use App\Service\FakeFile;
+use App\Service\Storage;
 use Carbon\Carbon;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -79,10 +79,10 @@ final class MovieFactory extends PersistentProxyObjectFactory
         $filesystem = new Filesystem;
         $slugger = new AsciiSlugger;
 
-        $path = $this->storage->path() . "$directory/" . strtolower($slugger->slug($title)) . '.jpg';
+        $path = "$directory/" . strtolower($slugger->slug($title)) . '.jpg';
 
-        $filesystem->dumpFile($path, $imageContent);
+        $filesystem->dumpFile($this->storage->absolutePath($path), $imageContent);
 
-        return $path;
+        return $this->storage->path($path);
     }
 }

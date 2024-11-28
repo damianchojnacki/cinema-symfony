@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Utils\Storage;
+use App\Service\Storage;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\ServerFactory;
@@ -19,8 +19,8 @@ class ImageController extends AbstractController
     {
         $server = ServerFactory::create([
             'response' => new SymfonyResponseFactory,
-            'source' => $storage->path(),
-            'cache' => $storage->path() . '/cache',
+            'source' => $storage->root(),
+            'cache' => $storage->path('cache'),
         ]);
 
         try {

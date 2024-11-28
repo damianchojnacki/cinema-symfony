@@ -18,10 +18,10 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ApiResource(
     operations: [
-        new Get,
-        new GetCollection,
+        new Get(),
+        new GetCollection(),
     ],
-    normalizationContext: ['groups' => ['movie']],
+    normalizationContext: ['groups' => ['read']],
     order: ['popularity' => 'DESC'],
     paginationItemsPerPage: 12,
 )]
@@ -31,20 +31,20 @@ class Movie
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[Groups('movie')]
+    #[Groups('read')]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups('movie')]
+    #[Groups('read')]
     public string $title = '';
 
     #[ORM\Column(length: 512)]
-    #[Groups('movie')]
+    #[Groups('read')]
     public string $description = '';
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
-    #[Groups('movie')]
+    #[Groups('read')]
     #[ApiProperty(
         jsonSchemaContext: [
             'type' => 'string',
@@ -54,7 +54,7 @@ class Movie
     public DateTimeImmutable $release_date;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1)]
-    #[Groups('movie')]
+    #[Groups('read')]
     public string $rating = '';
 
     #[ORM\Column(type: Types::INTEGER)]
@@ -80,4 +80,12 @@ class Movie
     {
         return $this->id;
     }
+
+    #[ApiProperty]
+    #[Groups(['read'])]
+    public string $poster_url = '';
+
+    #[ApiProperty]
+    #[Groups(['read'])]
+    public string $backdrop_url = '';
 }

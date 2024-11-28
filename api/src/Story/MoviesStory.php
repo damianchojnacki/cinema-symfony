@@ -6,7 +6,7 @@ use App\Command\MoviesImportCommand;
 use App\Factory\MovieFactory;
 use App\Factory\ReservationFactory;
 use App\Factory\ShowingFactory;
-use App\Utils\Storage;
+use App\Service\Storage;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -25,7 +25,7 @@ final class MoviesStory extends Story
     {
         $filesystem = new Filesystem;
 
-        $filesystem->remove($this->storage->path());
+        $filesystem->remove($this->storage->root());
 
         $application = new Application($this->kernel);
         $application->setAutoExit(false);

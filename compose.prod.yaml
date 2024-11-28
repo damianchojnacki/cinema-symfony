@@ -13,6 +13,9 @@ services:
     build:
       context: ./pwa
       target: prod
+      network: host
+      extra_hosts:
+        - "php=127.0.0.1"
 
   database:
     environment:

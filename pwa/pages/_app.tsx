@@ -1,12 +1,12 @@
 import "../styles/globals.css"
-import Layout from "../components/common/Layout"
+import Provider from "../components/common/Provider"
 import type { AppProps } from "next/app"
-import type { DehydratedState } from "react-query"
+import type { DehydratedState } from "@tanstack/react-query"
 
 function MyApp({ Component, pageProps }: AppProps<{dehydratedState: DehydratedState}>) {
-  return <Layout dehydratedState={pageProps.dehydratedState}>
+  return <Provider dehydratedState={pageProps.dehydratedState}>
     <Component {...pageProps} />
-  </Layout>
+  </Provider>
 }
 
 export default MyApp
