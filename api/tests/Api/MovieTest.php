@@ -15,6 +15,7 @@ class MovieTest extends ApiTestCase
     use Factories, ResetDatabase;
 
     protected Storage $storage;
+
     protected FrontendUrlGenerator $urlGenerator;
 
     protected function setUp(): void

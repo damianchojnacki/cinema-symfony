@@ -77,27 +77,4 @@
         scrollbar-width: none;
         -ms-overflow-style: none;
     }
-
-    .scrollbar-simple::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    .scrollbar-simple::-webkit-scrollbar-track {
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .scrollbar-simple::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    .scrollbar-simple::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.4);
-    }
-
-    .scrollbar-simple::-webkit-scrollbar-thumb:active {
-        background: rgba(255, 255, 255, 0.9);
-    }
 }

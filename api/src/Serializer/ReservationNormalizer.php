@@ -2,18 +2,20 @@
 
 namespace App\Serializer;
 
-use App\Entity\Movie;
+use App\Entity\Reservation;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class MovieNormalizer implements NormalizerAwareInterface, NormalizerInterface
+class ReservationNormalizer implements NormalizerAwareInterface, NormalizerInterface
 {
     use NormalizerAwareTrait;
 
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator) {}
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {}
 
     /**
      * @return array<mixed>|\ArrayObject<(int|string), mixed>|bool|float|int|string|null
@@ -22,12 +24,8 @@ class MovieNormalizer implements NormalizerAwareInterface, NormalizerInterface
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array|\ArrayObject|bool|float|int|string|null
     {
-        $object->poster_url = $this->urlGenerator->generate('image_show', [
-            'path' => $object->poster_path,
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        $object->backdrop_url = $this->urlGenerator->generate('image_show', [
-            'path' => $object->backdrop_path,
+        $object->qr_url = $this->urlGenerator->generate('reservations_qr_show', [
+            'token' => $object->token,
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $this->normalizer->normalize($object, $format, [self::class => true] + $context);
@@ -38,7 +36,7 @@ class MovieNormalizer implements NormalizerAwareInterface, NormalizerInterface
      */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return $data instanceof Movie && ! isset($context[self::class]);
+        return $data instanceof Reservation && ! isset($context[self::class]);
     }
 
     /**
@@ -47,7 +45,7 @@ class MovieNormalizer implements NormalizerAwareInterface, NormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Movie::class => false,
+            Reservation::class => false,
         ];
     }
 }

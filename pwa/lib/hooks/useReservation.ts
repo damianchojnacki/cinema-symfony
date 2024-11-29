@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { Movie } from '@/types/Movie'
 import { Reservation } from '@/types/Reservation'
 
 export const useReservation = create<{

@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -40,6 +38,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         'id' => new Link(fromClass: Showing::class),
     ],
     normalizationContext: ['groups' => ['show']],
+    mercure: true,
 )]
 #[ORM\Entity]
 class Showing

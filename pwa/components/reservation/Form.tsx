@@ -1,37 +1,49 @@
-import { FunctionComponent, useMemo } from 'react'
-import { useRouter } from 'next/router'
+import { FunctionComponent } from 'react'
 import { useMutation } from '@tanstack/react-query'
-import { fetch, FetchError, FetchResponse } from '@/utils/dataAccess'
+import { FetchError } from '@/utils/dataAccess'
 import { Reservation } from '@/types/Reservation'
 import { useForm } from 'react-hook-form'
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useReservation } from '@/lib/hooks/useReservation'
 import { Label } from '@/components/ui/label'
-import { createReservation } from '@/lib/api/reservations'
+import { CreateReservationParams } from '@/utils/api/reservations'
 import { Alert } from '@/components/ui/alert'
 import { Summary } from '@/components/reservation/Summary'
+import { useApiClient } from '@/lib/hooks/useApiClient'
 
 interface Props {
-  showingId?: string
+  showingId: string
 }
 
-interface SaveParams {
-  values: Reservation
+export interface AxiosError {
+  message: string
+  response?: {
+    data: {
+      message: string
+      errors?: { [key: string]: string }
+    }
+  }
 }
 
 export const Form: FunctionComponent<Props> = ({ showingId }) => {
   const { seats, updateReservation, nextStep, previousStep } = useReservation()
+  const apiClient = useApiClient()
 
   const { mutate, error } = useMutation<
-  FetchResponse<Reservation> | undefined,
-  Error | FetchError,
-  SaveParams
+  Reservation,
+  Error | FetchError | AxiosError,
+  CreateReservationParams
   >({
-    mutationFn: async (saveParams) => await createReservation(showingId, saveParams),
-    onSuccess: (response) => {
-      updateReservation(response.data)
+    mutationFn: async (data) => {
+      if (apiClient == null) {
+        throw new Error('Could not create reservation! API Client is not set.')
+      }
+
+      return await apiClient.createReservation(showingId, data)
+    },
+    onSuccess: (reservation) => {
+      updateReservation(reservation)
       nextStep()
     }
   })
@@ -42,32 +54,52 @@ export const Form: FunctionComponent<Props> = ({ showingId }) => {
     }
   })
 
-  function onSubmit (values) {
+  function onSubmit (data: { email: string }) {
     mutate({
-      values: {
-        ...values,
-        seats
-      }
+      ...data,
+      seats
     })
+  }
+
+  function renderErrors () {
+    if (error == null) {
+      return <></>
+    }
+
+    if ('fields' in error) {
+      return Object.values(error.fields).map((error, index) => (
+        <Alert key={index} variant='destructive' className='mb-2'>
+          {error}
+        </Alert>
+      ))
+    }
+
+    if ('response' in error && (error.response != null)) {
+      if (error.response.data.errors == null) {
+        return (
+          <Alert variant='destructive' className='mb-2'>
+            {error.response.data.message}
+          </Alert>
+        )
+      }
+
+      return Object.values(error.response.data.errors).map((error, index) => (
+        <Alert key={index} variant='destructive' className='mb-2'>
+          {error}
+        </Alert>
+      ))
+    }
+
+    return (
+      <Alert variant='destructive' className='mb-2'>
+        {error.message}
+      </Alert>
+    )
   }
 
   return (
     <div className='mt-4 md:w-1/3'>
-      {(error != null)
-        ? (
-          <Alert variant='destructive' className='mb-2'>
-            {error.message}
-          </Alert>
-          )
-        : null}
-
-      {error?.fields?.takenSeats
-        ? (
-          <Alert variant='destructive' className='mb-2'>
-            {error.fields.takenSeats}
-          </Alert>
-          )
-        : null}
+      {renderErrors()}
 
       <Summary />
 

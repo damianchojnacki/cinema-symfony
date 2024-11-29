@@ -73,6 +73,6 @@ class MoviesImportCommand extends Command
 
         $filesystem->dumpFile($this->storage->absolutePath($path), $imageContent);
 
-        return $this->storage->path($path);
+        return $path;
     }
 }

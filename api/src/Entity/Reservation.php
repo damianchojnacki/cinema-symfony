@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\State\CreateProvider;
@@ -67,14 +65,17 @@ class Reservation
     public string $total = '';
 
     #[ORM\Column(type: Types::STRING)]
-    #[ApiProperty(readable: true, writable: false)]
-    #[Groups(['read'])]
+    #[ApiProperty(readable: false, writable: false)]
     public string $token = '';
 
     #[ORM\ManyToOne(targetEntity: Showing::class, inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(['read'])]
     public Showing $showing;
+
+    #[ApiProperty]
+    #[Groups(['read'])]
+    public string $qr_url = '';
 
     #[Assert\IsFalse(message: 'The seats are already taken.')]
     #[Groups(['write'])]

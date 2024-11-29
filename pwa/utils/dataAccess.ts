@@ -13,7 +13,7 @@ interface Violation {
 
 export interface FetchResponse<TData> {
   hubURL: string | null
-  data: TData
+  data: TData & Item
   text: string
 }
 
@@ -122,23 +122,4 @@ export const getItemPaths = async <TData extends Item>(
 
     return []
   }
-}
-
-export const getCollectionPaths = async <TData extends Item>(
-  response: FetchResponse<PagedCollection<TData>> | undefined,
-  resourceName: string,
-  pathTemplate: string
-) => {
-  if (response == null) return []
-
-  const view = response.data.view
-  const { last } = view ?? {}
-  const paths = [pathTemplate.replace('[page]', '1')]
-  const lastPage = parsePage(resourceName, last ?? '')
-
-  for (let page = 2; page <= lastPage; page++) {
-    paths.push(pathTemplate.replace('[page]', page.toString()))
-  }
-
-  return paths
 }

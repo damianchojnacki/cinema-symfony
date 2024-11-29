@@ -20,14 +20,13 @@ final readonly class ShowingQueryCollectionExtension implements QueryCollectionE
     {
         if (
             $resourceClass !== Showing::class
-            || '_api_/movies/{movieId}/showings_get_collection' !== $operation->getName()
+            || $operation->getName() !== '_api_/movies/{movieId}/showings_get_collection'
         ) {
             return;
         }
 
         $queryBuilder
             ->andWhere(\sprintf('%s.starts_at > :date', $queryBuilder->getRootAliases()[0]))
-            ->setParameter('date', new DateTimeImmutable())
-        ;
+            ->setParameter('date', new DateTimeImmutable);
     }
 }

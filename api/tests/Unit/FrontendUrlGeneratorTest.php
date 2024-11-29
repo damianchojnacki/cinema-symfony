@@ -15,17 +15,17 @@ class FrontendUrlGeneratorTest extends TestCase
         $this->urlGenerator = new FrontendUrlGenerator('https://example.com');
     }
 
-    public function testBaseReturnsBaseUrl(): void
+    public function test_base_returns_base_url(): void
     {
         $this->assertSame('https://example.com', $this->urlGenerator->base());
     }
 
-    public function testHomepageReturnsBaseUrl(): void
+    public function test_homepage_returns_base_url(): void
     {
         $this->assertSame('https://example.com', $this->urlGenerator->homepage());
     }
 
-    public function testPathGeneratesUrlWithoutParameters(): void
+    public function test_path_generates_url_without_parameters(): void
     {
         $path = 'about';
         $expectedUrl = 'https://example.com/about';
@@ -33,7 +33,7 @@ class FrontendUrlGeneratorTest extends TestCase
         $this->assertSame($expectedUrl, $this->urlGenerator->path($path));
     }
 
-    public function testPathGeneratesUrlWithParameters(): void
+    public function test_path_generates_url_with_parameters(): void
     {
         $path = 'search';
         $parameters = ['q' => 'query', 'page' => 2];
@@ -42,7 +42,7 @@ class FrontendUrlGeneratorTest extends TestCase
         $this->assertSame($expectedUrl, $this->urlGenerator->path($path, $parameters));
     }
 
-    public function testReservationGeneratesUrlForReservation(): void
+    public function test_reservation_generates_url_for_reservation(): void
     {
         $reservation = $this->createMock(Reservation::class);
         $reservation->token = 'abcd1234';

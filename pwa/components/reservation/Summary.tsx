@@ -1,16 +1,5 @@
 import { FunctionComponent, useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { useMutation } from '@tanstack/react-query'
-import { fetch, FetchError, FetchResponse } from '@/utils/dataAccess'
-import { Reservation } from '@/types/Reservation'
-import { useForm } from 'react-hook-form'
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { useReservation } from '@/lib/hooks/useReservation'
-import { Label } from '@/components/ui/label'
-import { createReservation } from '@/lib/api/reservations'
-import { Alert } from '@/components/ui/alert'
 
 export const Summary: FunctionComponent = () => {
   const { seats } = useReservation()

@@ -83,6 +83,6 @@ final class MovieFactory extends PersistentProxyObjectFactory
 
         $filesystem->dumpFile($this->storage->absolutePath($path), $imageContent);
 
-        return $this->storage->path($path);
+        return $path;
     }
 }

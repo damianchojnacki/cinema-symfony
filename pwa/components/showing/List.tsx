@@ -4,7 +4,7 @@ import { Showing } from '@/types/Showing'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { routes } from '@/lib/routes'
+import { useRoutes } from '@/lib/hooks/useRoutes'
 
 interface Props {
   showings: Showing[]
@@ -32,6 +32,7 @@ const groupByDate = (showings: Showing[]) => {
 
 export const List: FunctionComponent<Props> = ({ showings }) => {
   const { query: { id: movieId } } = useRouter()
+  const routes = useRoutes()
 
   const groupedShowings = groupByDate(showings)
 
@@ -46,7 +47,7 @@ export const List: FunctionComponent<Props> = ({ showings }) => {
           <div className='flex gap-4'>
             {showings.map((showing) => (
               <Link
-                href={routes.getShowingPath(movieId as string, String(showing.id))}
+                href={routes?.getShowingPath(movieId as string, String(showing.id)) ?? ''}
                 key={showing.id}
               >
                 <Button variant='secondary' className='text-sm font-medium' suppressHydrationWarning>

@@ -8,6 +8,6 @@ export const getShowings = (movieId: string | string[] | undefined) => async () 
   await fetch<PagedCollection<Showing>>(getShowingsPath(movieId))
 
 export const getShowing = async (id: string | string[] | undefined) =>
-  id ? await fetch<Showing>(`/showings/${id}`) : await Promise.resolve(undefined)
+  id ? await fetch<Showing>(`/showings/${id}`) : undefined
 
 export const getShowingPath = (id: string | string[] | undefined) => `/showings/${id}`

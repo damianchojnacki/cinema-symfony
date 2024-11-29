@@ -39,10 +39,10 @@ class ImageController extends AbstractController
     {
         $url = $urlGenerator->reservation($reservation);
 
-        $options = new QROptions();
-
-        $options->outputBase64 = false;
-        $options->quietzoneSize = 2;
+        $options = new QROptions([
+            'outputBase64' => false,
+            'quietzoneSize' => 2,
+        ]);
 
         $qrcode = (new QRCode($options))->render($url);
 

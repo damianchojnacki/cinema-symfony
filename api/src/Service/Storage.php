@@ -37,6 +37,6 @@ class Storage
 
     public function filesystem(): Filesystem
     {
-        return new Filesystem();
+        return new Filesystem;
     }
 }

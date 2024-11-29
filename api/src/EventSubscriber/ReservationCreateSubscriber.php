@@ -14,13 +14,20 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
-final class ReservationMailSubscriber implements EventSubscriberInterface
+final readonly class ReservationCreateSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly MailerInterface $mailer,
-        private readonly FrontendUrlGenerator $urlGenerator,
+        private MailerInterface $mailer,
+        private FrontendUrlGenerator $frontendUrlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
+        private HubInterface $mercure,
+        private SerializerInterface $serializer,
     ) {}
 
     /**
@@ -29,14 +36,14 @@ final class ReservationMailSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::VIEW => ['sendMail', EventPriorities::POST_WRITE],
+            KernelEvents::VIEW => ['handleCreate', EventPriorities::POST_WRITE],
         ];
     }
 
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendMail(ViewEvent $event): void
+    public function handleCreate(ViewEvent $event): void
     {
         $reservation = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
@@ -45,7 +52,32 @@ final class ReservationMailSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $url = $this->urlGenerator->reservation($reservation);
+        $this->publishMercureTopic($reservation);
+
+        $this->sendMail($reservation);
+    }
+
+    private function publishMercureTopic(Reservation $reservation): void
+    {
+        $url = $this->urlGenerator->generate('_api_/showings/{id}_get', [
+            'id' => $reservation->showing->getId(),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $reservation->showing->reservations->add($reservation);
+
+        $data = $this->serializer->serialize($reservation->showing, 'jsonld');
+
+        $update = new Update($url, $data);
+
+        $this->mercure->publish($update);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    private function sendMail(Reservation $reservation): void
+    {
+        $url = $this->frontendUrlGenerator->reservation($reservation);
 
         $qrcode = (new QRCode)->render($url);
         $time = $reservation->showing->starts_at->format('r');

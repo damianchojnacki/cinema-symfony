@@ -9,7 +9,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class StorageTest extends KernelTestCase
 {
-    public function testRootMethodReturnsCorrectStorageFolder(): void
+    public function test_root_method_returns_correct_storage_folder(): void
     {
         $container = static::getContainer();
 
@@ -23,7 +23,7 @@ class StorageTest extends KernelTestCase
         $this->assertSame('/tmp/storage/', $storage->root());
     }
 
-    public function testFakeMethodChangesStorageDirAndRemovesOldDirectory(): void
+    public function test_fake_method_changes_storage_dir_and_removes_old_directory(): void
     {
         $container = static::getContainer();
 
@@ -33,7 +33,7 @@ class StorageTest extends KernelTestCase
 
         $container->set(Kernel::class, $mockKernel);
 
-        $filesystem = new Filesystem();
+        $filesystem = new Filesystem;
         $filesystem->mkdir('/tmp/storage/fake');
         $filesystem->touch($file = '/tmp/storage/fake/test');
 
@@ -46,7 +46,7 @@ class StorageTest extends KernelTestCase
         $this->assertFalse($filesystem->exists($file));
     }
 
-    public function testAbsolutePathCombinesRootAndPath(): void
+    public function test_absolute_path_combines_root_and_path(): void
     {
         $mockKernel = $this->createMock(Kernel::class);
         $mockKernel->method('getProjectDir')->willReturn('/tmp');
@@ -56,7 +56,7 @@ class StorageTest extends KernelTestCase
         $this->assertSame('/tmp/storage/file.txt', $storage->absolutePath('file.txt'));
     }
 
-    public function testPathAppendsToStorageDir(): void
+    public function test_path_appends_to_storage_dir(): void
     {
         $mockKernel = $this->createMock(Kernel::class);
 

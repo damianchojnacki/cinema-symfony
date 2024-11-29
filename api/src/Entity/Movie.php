@@ -18,8 +18,8 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ApiResource(
     operations: [
-        new Get(),
-        new GetCollection(),
+        new Get,
+        new GetCollection,
     ],
     normalizationContext: ['groups' => ['read']],
     order: ['popularity' => 'DESC'],

@@ -1,12 +1,6 @@
-import { FunctionComponent, useEffect, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import Head from 'next/head'
+import { FunctionComponent } from 'react'
 
-import { getItemPath } from '@/utils/dataAccess'
 import { Showing } from '@/types/Showing'
-import { routes } from '@/lib/routes'
-import { Movie } from '@/types/Movie'
 import { Button } from '@/components/ui/button'
 import { useReservation } from '@/lib/hooks/useReservation'
 
@@ -35,7 +29,7 @@ export const SelectSeats: FunctionComponent<Props> = ({ showing }) => {
   }
 
   const isSeatTaken = (row: number, col: number) => {
-    if (showing.seats_taken) {
+    if (showing.seats_taken != null) {
       return showing.seats_taken.some(
         (seat: number[]) => seat[0] === row && seat[1] === col
       )
@@ -51,7 +45,7 @@ export const SelectSeats: FunctionComponent<Props> = ({ showing }) => {
   return (
     <div className='w-full md:w-fit'>
       <div className='flex items-center justify-between'>
-        <h2 className='text-lg font-medium my-4 p-1'>
+        <h2 className='text-lg font-medium my-4 p-1' suppressHydrationWarning>
           {`Showtime: ${new Date(showing.starts_at ?? Date.now()).toLocaleString(['en-US'], {
             dateStyle: 'medium',
             timeStyle: 'short'
