@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Reservation;
+use App\Service\FrontendUrlGenerator;
 use App\Service\Storage;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\ServerFactory;
@@ -28,5 +32,20 @@ class ImageController extends AbstractController
         } catch (FileNotFoundException $e) {
             throw new NotFoundHttpException('Image not found.');
         }
+    }
+
+    #[Route('/reservations/{token}/qr', name: 'reservations_qr_show', methods: ['GET'])]
+    public function qr(Reservation $reservation, FrontendUrlGenerator $urlGenerator): Response
+    {
+        $url = $urlGenerator->reservation($reservation);
+
+        $options = new QROptions();
+
+        $options->outputBase64 = false;
+        $options->quietzoneSize = 2;
+
+        $qrcode = (new QRCode($options))->render($url);
+
+        return new Response($qrcode, 200, ['Content-Type' => 'image/svg+xml']);
     }
 }

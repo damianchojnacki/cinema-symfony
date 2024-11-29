@@ -12,8 +12,8 @@ export const getStaticProps: GetStaticProps = async () => {
   await queryClient.prefetchInfiniteQuery({
     queryKey: [getMoviesPath()],
     queryFn: async ({ pageParam }) => await getMovies(pageParam),
-    initialPageParam: 1,
-    getNextPageParam: (data) => data?.data.view.next?.split('?page=')[1],
+    initialPageParam: '1',
+    getNextPageParam: (data) => data?.data.view?.next?.split('?page=')[1],
     pages: 1
   })
 

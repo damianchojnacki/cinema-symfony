@@ -9,7 +9,6 @@ import { getMovies, getMoviesPath } from '@/lib/api/movies'
 import Layout from '@/components/common/Layout'
 import { useCurrentMovie } from '@/lib/hooks/useCurrentMovie'
 import { useEffect, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
 import { Current } from '@/components/movie/Current'
 import { Backdrop } from '@/components/movie/Backdrop'
 
@@ -19,9 +18,9 @@ export const PageList: NextComponentType = () => {
   } = useRouter()
 
   const { data, fetchNextPage, isFetching } = useInfiniteQuery({
-    queryFn: async ({ pageParam }) => await getMovies(pageParam as string),
+    queryFn: async ({ pageParam }) => await getMovies(pageParam),
     queryKey: [getMoviesPath(page)],
-    initialPageParam: page ?? 1,
+    initialPageParam: page ?? '1',
     getNextPageParam: (data) => data?.data?.view?.next?.split('?page=')[1]
   })
 

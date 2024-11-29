@@ -1,19 +1,12 @@
 import {
   GetStaticPaths,
-  GetStaticProps,
-  NextComponentType,
-  NextPageContext
+  GetStaticProps
 } from 'next'
-import DefaultErrorPage from 'next/error'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
-import { Show } from '@/components/movie/Show'
 import { PagedCollection } from '@/types/collection'
 import { Movie } from '@/types/Movie'
 import { fetch, getItemPaths } from '@/utils/dataAccess'
-import { useMercure } from '@/utils/mercure'
 import { getShowings, getShowingsPath } from '@/lib/api/showings'
 import { getMovie, getMoviePath } from '@/lib/api/movies'
 import { PageList } from '@/components/showing/PageList'

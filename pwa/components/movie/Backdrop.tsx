@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react'
 
 import { Movie } from '@/types/Movie'
-import { useCurrentMovie } from '@/lib/hooks/useCurrentMovie'
 
 interface Props {
   movie: Movie

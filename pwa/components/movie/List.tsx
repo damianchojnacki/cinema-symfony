@@ -2,7 +2,6 @@ import { UIEvent, FunctionComponent } from 'react'
 import { Movie } from '@/types/Movie'
 import { Card } from '@/components/movie/Card'
 import { useCurrentMovie } from '@/lib/hooks/useCurrentMovie'
-import debounce from 'lodash/debounce'
 
 interface Props {
   movies: Movie[]

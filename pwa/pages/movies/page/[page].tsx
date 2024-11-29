@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps = async ({
     queryKey: [getMoviesPath(page)],
     queryFn: async ({ pageParam }) => await getMovies(pageParam),
     initialPageParam: page,
-    getNextPageParam: (data) => data?.data.view.next?.split('?page=')[1],
+    getNextPageParam: (data) => data?.data.view?.next?.split('?page=')[1],
     pages: 1
   })
 

@@ -36,7 +36,7 @@ final class MoviesStory extends Story
         );
         //MovieFactory::createMany(20);
 
-        ShowingFactory::createMany(100, function () {
+        ShowingFactory::createMany(200, function () {
             return ['movie' => MovieFactory::random()];
         });
 

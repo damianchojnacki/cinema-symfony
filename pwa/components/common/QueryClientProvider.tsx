@@ -3,10 +3,10 @@ import {
   DehydratedState,
   HydrationBoundary,
   QueryClient,
-  QueryClientProvider
+  QueryClientProvider as ReactQueryClientProvider
 } from '@tanstack/react-query'
 
-const Provider = ({
+const QueryClientProvider = ({
   children,
   dehydratedState
 }: {
@@ -16,10 +16,10 @@ const Provider = ({
   const [queryClient] = useState(() => new QueryClient())
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <ReactQueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
-    </QueryClientProvider>
+    </ReactQueryClientProvider>
   )
 }
 
-export default Provider
+export default QueryClientProvider

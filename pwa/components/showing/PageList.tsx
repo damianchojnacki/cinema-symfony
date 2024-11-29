@@ -6,11 +6,7 @@ import { getShowings, getShowingsPath } from '@/lib/api/showings'
 import { useMercure } from '@/utils/mercure'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
-import { Show } from '@/components/movie/Show'
-import { Current } from '@/components/movie/Current'
 import { List } from '@/components/showing/List'
-import { useEffect } from 'react'
-import { useCurrentMovie } from '@/lib/hooks/useCurrentMovie'
 import Layout from '@/components/common/Layout'
 import { Summary } from '@/components/movie/Summary'
 import Link from 'next/link'
@@ -58,7 +54,7 @@ export const PageList: NextComponentType = () => {
         <div className='absolute top-[20%] px-4 xl:px-8'>
           <Summary movie={movie} />
 
-          <Link href={routes.getMoviesPath()}>
+          <Link href={routes.getMoviesPath()} className='block md:inline text-center'>
             <Button size='lg' variant='default' className='text-lg font-bold'>
               <svg
                 xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5}
