@@ -14,7 +14,7 @@ export const Card: FunctionComponent<Props> = ({ movie }) => {
     <div
       onClick={() => update(movie)}
       className={`snap-center flex flex-col items-center justify-center w-fit cursor-pointer shadow transform hover:scale-105 transition ${movie.id === current?.id ? 'ring-2 ring-gray-500' : ''}`}
-      role='button'
+      role="button"
       tabIndex={Number(movie.id)}
       aria-label={`Select ${movie.title}`}
       onKeyDown={(e) => {
@@ -28,12 +28,12 @@ export const Card: FunctionComponent<Props> = ({ movie }) => {
       }}
     >
       <img
-        className='object-cover'
-        width='384px'
+        className="object-cover"
+        width="384px"
         src={`${movie.poster_url}?w=192&fm=webp`}
         srcSet={`${movie.poster_url}?w=192&fm=webp 640w, ${movie.poster_url}?w=384&fm=webp 1200w`}
         alt={`${movie.title} poster`}
-        loading='lazy'
+        loading="lazy"
       />
     </div>
   )

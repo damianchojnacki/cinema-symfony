@@ -7,16 +7,19 @@ const mercureSubscribe = <T extends Item | PagedCollection<Item> | undefined>(
   data: T | PagedCollection<T>,
   setData: (data: T) => void
 ) => {
-  if ((data == null) || !data['@id']) throw new Error('@id is missing')
+  if (!data?.['@id']) throw new Error('@id is missing')
 
   const url = new URL(hubURL, window.origin)
+
   url.searchParams.append(
     'topic',
     new URL(data['@id'], window.origin).toString()
   )
+
   const eventSource = new EventSource(url.toString())
-  eventSource.addEventListener('message', (event) =>
-    setData(JSON.parse(event.data))
+
+  eventSource.addEventListener('message', (event: MessageEvent<string>) =>
+    setData(JSON.parse(event.data) as T)
   )
 
   return eventSource

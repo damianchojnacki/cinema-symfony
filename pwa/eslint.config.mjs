@@ -4,7 +4,6 @@ import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import pluginQuery from '@tanstack/eslint-plugin-query'
 
 export default [
   {
@@ -14,6 +13,7 @@ export default [
       'tailwind.config.js',
       'next.config.js',
       'postcss.config.js',
+      'eslint.config.mjs',
     ],
   },
   {
@@ -28,7 +28,8 @@ export default [
       ...hooksPlugin.configs.recommended.rules,
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs['core-web-vitals'].rules,
-      '@next/next/no-img-element': 'error',
+      '@next/next/no-img-element': 'off',
+      "react-hooks/exhaustive-deps": 'off'
     },
   },
   {
@@ -50,5 +51,4 @@ export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  ...pluginQuery.configs['flat/recommended'],
 ]

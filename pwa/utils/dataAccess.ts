@@ -20,18 +20,16 @@ export interface FetchResponse<TData> {
 export interface FetchError {
   message: string
   status: string
-  fields: { [key: string]: string }
+  fields: Record<string, string>
 }
 
 const extractHubURL = (response: Response): null | URL => {
   const linkHeader = response.headers.get('Link')
   if (!linkHeader) return null
 
-  const matches = linkHeader.match(
-    /<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/
-  )
+  const matches = /<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/.exec(linkHeader)
 
-  return (matches != null) && matches[1] ? new URL(matches[1], ENTRYPOINT) : null
+  return matches?.[1] ? new URL(matches[1], ENTRYPOINT) : null
 }
 
 export const fetch = async <TData>(
@@ -39,11 +37,14 @@ export const fetch = async <TData>(
   init: RequestInit = {}
 ): Promise<FetchResponse<TData> | undefined> => {
   if (typeof init.headers === 'undefined') init.headers = {}
-  if (!init.headers.hasOwnProperty('Accept')) { init.headers = { ...init.headers, Accept: MIME_TYPE } }
+
+  if (!Object.hasOwn(init.headers, 'Accept')) { init.headers = { ...init.headers, Accept: MIME_TYPE } }
+
   if (
     init.body !== undefined &&
     !(init.body instanceof FormData) &&
-    !init.headers?.hasOwnProperty('Content-Type')
+    init.headers &&
+    !Object.hasOwn(init.headers, 'Content-Type')
   ) { init.headers = { ...init.headers, 'Content-Type': MIME_TYPE } }
 
   const resp = await isomorphicFetch(ENTRYPOINT + id, init)
@@ -62,7 +63,7 @@ export const fetch = async <TData>(
   const errorMessage = json.title
   const status = json.description || resp.statusText
   if (!json.violations) throw Error(errorMessage)
-  const fields: { [key: string]: string } = {}
+  const fields: Record<string, string> = {}
   json.violations.map(
     (violation: Violation) =>
       (fields[violation.propertyPath] = violation.message)

@@ -5,7 +5,7 @@ import '@fontsource/poppins/600.css'
 import '@fontsource/poppins/700.css'
 
 const Welcome = () => (
-  <div className='w-full overflow-x-hidden'>
+  <div className="w-full overflow-x-hidden">
     <Head>
       <title>Welcome to API Platform!</title>
     </Head>

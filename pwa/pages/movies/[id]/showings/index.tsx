@@ -17,19 +17,18 @@ import Layout from '@/components/common/Layout'
 import { UpcomingShowings } from '@/components/showing/UpcomingShowings'
 
 const PageList: NextComponentType = () => {
-  const router = useRouter()
-  const { id } = router.query
+  const { query: {id} } = useRouter()
 
   const { data: { data: movie } = { hubURL: null, text: '' } } =
     useQuery({
-      queryKey: [getMoviePath(id)],
-      queryFn: async () => await getMovie(id)
+      queryKey: [getMoviePath(id as string)],
+      queryFn: async () => await getMovie(id as string)
     })
 
   const { data: { data: showings } = { hubURL: null, text: '' } } =
     useQuery({
-      queryKey: [getShowingsPath(id)],
-      queryFn: getShowings(id)
+      queryKey: [getShowingsPath(id as string)],
+      queryFn: getShowings(id as string)
     })
 
   if (movie == null) {
@@ -50,7 +49,11 @@ const PageList: NextComponentType = () => {
 export const getStaticProps: GetStaticProps = async ({
   params: { id } = {}
 }) => {
-  if (!id) throw new Error('id not in query param')
+  if (!id || Array.isArray(id)) {
+    return {
+      notFound: true
+    }
+  }
 
   const queryClient = new QueryClient()
 

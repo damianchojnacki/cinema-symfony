@@ -46,14 +46,14 @@ export const List: FunctionComponent<Props> = ({ movies, handleLoadNextPage }) =
   }
 
   return (
-    <div className='absolute bottom-0 w-full'>
-      <div className='relative'>
-        <div className='flex justify-between items-center'>
-          <h1 className='p-4 xl:px-8 text-3xl z-20 transform'>Currently playing</h1>
+    <div className="absolute bottom-0 w-full">
+      <div className="relative">
+        <div className="flex justify-between items-center">
+          <h1 className="p-4 xl:px-8 text-3xl z-20 transform">Currently playing</h1>
         </div>
 
-        <div onScroll={handleScroll} className='px-4 xl:px-8 snap-y snap-mandatory overflow-scroll h-[calc(80vw)] sm:h-[calc(55vw)] md:h-[calc(40vw)] xl:h-[calc(27vw)] w-full scroll-smooth scrollbar-hidden py-10'>
-          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 place-items-center'>
+        <div onScroll={handleScroll} className="px-4 xl:px-8 snap-y snap-mandatory overflow-scroll h-[calc(80vw)] sm:h-[calc(55vw)] md:h-[calc(40vw)] xl:h-[calc(27vw)] w-full scroll-smooth scrollbar-hidden py-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 place-items-center">
             {movies.map((movie) => (
               <Card key={movie.id} movie={movie} />
             ))}

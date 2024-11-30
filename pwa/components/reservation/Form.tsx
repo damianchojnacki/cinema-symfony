@@ -21,7 +21,7 @@ export interface AxiosError {
   response?: {
     data: {
       message: string
-      errors?: { [key: string]: string }
+      errors?: Record<string, string>
     }
   }
 }
@@ -68,7 +68,7 @@ export const Form: FunctionComponent<Props> = ({ showingId }) => {
 
     if ('fields' in error) {
       return Object.values(error.fields).map((error, index) => (
-        <Alert key={index} variant='destructive' className='mb-2'>
+        <Alert key={index} variant="destructive" className="mb-2">
           {error}
         </Alert>
       ))
@@ -77,48 +77,48 @@ export const Form: FunctionComponent<Props> = ({ showingId }) => {
     if ('response' in error && (error.response != null)) {
       if (error.response.data.errors == null) {
         return (
-          <Alert variant='destructive' className='mb-2'>
+          <Alert variant="destructive" className="mb-2">
             {error.response.data.message}
           </Alert>
         )
       }
 
       return Object.values(error.response.data.errors).map((error, index) => (
-        <Alert key={index} variant='destructive' className='mb-2'>
+        <Alert key={index} variant="destructive" className="mb-2">
           {error}
         </Alert>
       ))
     }
 
     return (
-      <Alert variant='destructive' className='mb-2'>
+      <Alert variant="destructive" className="mb-2">
         {error.message}
       </Alert>
     )
   }
 
   return (
-    <div className='mt-4 md:w-1/3'>
+    <div className="mt-4 md:w-1/3">
       {renderErrors()}
 
       <Summary />
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className=''>
-        <Label htmlFor='email'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="">
+        <Label htmlFor="email">
           Please fill your email below so we can send your tickets to mailbox:
         </Label>
 
         <Input
-          id='email'
-          type='email'
-          placeholder='user@example.com'
+          id="email"
+          type="email"
+          placeholder="user@example.com"
           required
-          className='w-64 mb-2'
+          className="w-64 mb-2"
           {...form.register('email')}
         />
 
-        <Button type='button' className='mr-2' onClick={previousStep}>Change seats</Button>
-        <Button type='submit' variant='secondary'>Submit</Button>
+        <Button type="button" className="mr-2" onClick={previousStep}>Change seats</Button>
+        <Button type="submit" variant="secondary">Submit</Button>
       </form>
     </div>
   )

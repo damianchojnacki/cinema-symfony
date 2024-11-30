@@ -1,7 +1,7 @@
 import { fetch } from '@/utils/dataAccess'
 import { Reservation } from '@/types/Reservation'
 
-export const getCreateReservationPath = (showingId: string) => `/showings/${showingId}/reservations`
+export const getCreateReservationPath = (showingId: string): string => `/showings/${showingId}/reservations`
 
 export type CreateReservationParams = Pick<Reservation, 'email' | 'seats'>
 

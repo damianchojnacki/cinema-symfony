@@ -12,8 +12,10 @@ import { Current } from '@/components/movie/Current'
 
 const PageList: NextComponentType = () => {
   const {
-    query: { page }
+    query
   } = useRouter()
+
+  const page = Array.isArray(query.page) ? undefined : query.page
 
   const { data, fetchNextPage } = useInfiniteQuery({
     queryFn: async ({ pageParam }) => await getMovies(pageParam),
@@ -27,7 +29,7 @@ const PageList: NextComponentType = () => {
   const { update: selectCurrentMovie } = useCurrentMovie()
 
   useEffect(() => {
-    if (!movies || !movies[0]) return
+    if (!movies?.[0]) return
 
     selectCurrentMovie(movies[0])
   }, [movies])
@@ -42,7 +44,7 @@ const PageList: NextComponentType = () => {
 
       <Current />
 
-      <List movies={movies} handleLoadNextPage={fetchNextPage} />
+      <List movies={movies} handleLoadNextPage={() => fetchNextPage} />
     </Layout>
   )
 }

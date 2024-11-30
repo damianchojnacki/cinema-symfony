@@ -15,14 +15,14 @@ export const Current: FunctionComponent = () => {
   }
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <Backdrop movie={movie} />
 
-      <div className='absolute top-[20%] px-4 xl:px-8'>
+      <div className="absolute top-[20%] px-4 xl:px-8">
         <Summary movie={movie} />
 
-        <Link href={routes?.getMovieShowingsPath(movie.id as string) ?? ''} className='block md:inline text-center'>
-          <Button size='lg' variant='secondary' className='text-lg font-bold'>Get Tickets</Button>
+        <Link href={routes?.getMovieShowingsPath(movie.id!) ?? ''} className="block md:inline text-center">
+          <Button size="lg" variant="secondary" className="text-lg font-bold">Get Tickets</Button>
         </Link>
       </div>
     </div>

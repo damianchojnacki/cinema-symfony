@@ -37,20 +37,20 @@ export const List: FunctionComponent<Props> = ({ showings }) => {
   const groupedShowings = groupByDate(showings)
 
   return (
-    <div className='mt-6'>
-      <h1 className='text-2xl font-bold mb-4'>Upcoming showings</h1>
+    <div className="mt-6">
+      <h1 className="text-2xl font-bold mb-4">Upcoming showings</h1>
 
       {Object.entries(groupedShowings).map(([date, showings]) => (
-        <div key={date} className='mb-6'>
-          <h2 className='text-xl font-semibold mb-2 border-b pb-2'>{date}</h2>
+        <div key={date} className="mb-6">
+          <h2 className="text-xl font-semibold mb-2 border-b pb-2">{date}</h2>
 
-          <div className='flex gap-4'>
+          <div className="flex gap-4">
             {showings.map((showing) => (
               <Link
                 href={routes?.getShowingPath(movieId as string, String(showing.id)) ?? ''}
                 key={showing.id}
               >
-                <Button variant='secondary' className='text-sm font-medium' suppressHydrationWarning>
+                <Button variant="secondary" className="text-sm font-medium" suppressHydrationWarning>
                   {new Date(showing.starts_at ?? Date.now()).toLocaleTimeString(['en-US'], { hour: '2-digit', minute: '2-digit' })}
                 </Button>
               </Link>
