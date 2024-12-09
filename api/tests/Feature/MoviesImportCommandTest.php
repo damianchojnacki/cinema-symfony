@@ -11,9 +11,12 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\JsonMockResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
 class MoviesImportCommandTest extends KernelTestCase
 {
+    use ResetDatabase;
+
     public function test_import_movies(): void
     {
         self::bootKernel();

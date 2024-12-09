@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@damianchojnacki/cinema':
-        specifier: ^1.0.0
-        version: 1.0.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(next@14.2.18(@babel/core@7.26.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.15)
+        specifier: ^1.0.1
+        version: 1.0.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(next@14.2.18(@babel/core@7.26.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.15)
       '@fontsource/poppins':
         specifier: ^5.1.0
         version: 5.1.0
@@ -176,8 +176,8 @@ packages:
     resolution: {integrity: sha512-Z/yiTPj+lDVnF7lWeKCIJzaIkI0vYO87dMpZ4bg4TDrFe4XXLFWL1TbXU27gBP3QccxV9mZICCrnjnYlJjXHOA==}
     engines: {node: '>=6.9.0'}
 
-  '@damianchojnacki/cinema@1.0.0':
-    resolution: {integrity: sha512-r1YuoIHf/NvCGQK1525vf4K3hGfrYxJ00hug+WkEDiahyd7seTPkt8EFjDp35XePw2YNy7rlad+27CKeHKzk9A==}
+  '@damianchojnacki/cinema@1.0.1':
+    resolution: {integrity: sha512-BTSJSNzpVNio98nL9KIiArWH/I4QkL2raYHLH+MuE4ITZxPFAK5l+DF/6WS0RdE4NfKjl+H2W8GI0OzGm8Utzg==}
     peerDependencies:
       next: ^14.2.18
       react: ^18.3.1
@@ -1997,7 +1997,7 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@damianchojnacki/cinema@1.0.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(next@14.2.18(@babel/core@7.26.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.15)':
+  '@damianchojnacki/cinema@1.0.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(next@14.2.18(@babel/core@7.26.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.15)':
     dependencies:
       '@fontsource/poppins': 5.1.0
       '@radix-ui/react-label': 2.1.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

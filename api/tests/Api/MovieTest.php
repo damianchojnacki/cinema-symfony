@@ -6,7 +6,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Movie;
 use App\Factory\MovieFactory;
-use App\Service\FrontendUrlGenerator;
 use App\Service\Storage;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
