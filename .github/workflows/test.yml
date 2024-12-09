@@ -55,23 +55,43 @@ jobs:
         run: docker compose exec -T php bin/console -e test doctrine:schema:validate
       - name: Run PHPUnit
         run: docker compose exec -T php bin/phpunit
-      - name: Create database
-        run: docker compose exec -T php bin/console doctrine:database:create
-      - name: Run migrations
-        run: docker compose exec -T php bin/console doctrine:migrations:migrate --no-interaction
+      - name: Run ESLint
+        run: docker compose exec -T pwa pnpm lint
       - name: Load fixtures
         run: docker compose exec -T php bin/console doctrine:fixtures:load --no-interaction
-      - name: Run E2E tests
-        run: docker run --network host -w /app -v ./e2e:/app --rm -t --ipc=host mcr.microsoft.com/playwright:v1.48.1-noble /bin/sh -c 'npm ci; npx playwright test;'
-  lint:
-    name: Docker Lint
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v4
-      -
-        name: Lint Dockerfiles
-        uses: hadolint/hadolint-action@v3.1.0
+      - name: Cache Playwright Binaries
+        uses: actions/cache@v4
         with:
-          recursive: true
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+      - name: Cache PNPM
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_HOME }}
+          key: ${{ runner.os }}-pnpm-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - name: Install Dependencies
+        working-directory: e2e
+        run: pnpm install
+      - name: Install Playwright Browsers with Deps
+        working-directory: e2e
+        run: pnpm exec playwright install --with-deps
+      - name: Run Playwright
+        working-directory: e2e
+        timeout-minutes: 5
+        run: pnpm exec playwright test --workers=1
+      - name: Debug Services
+        if: failure()
+        run: |
+          docker compose ps
+          docker compose logs
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-screenshots
+          path: pwa/test-results

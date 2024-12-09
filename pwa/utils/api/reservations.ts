@@ -1,5 +1,5 @@
 import { fetch } from '@/utils/dataAccess'
-import { Entity, CreateReservationParams } from 'cinema-next'
+import { Entity, CreateReservationParams } from '@damianchojnacki/cinema'
 
 export const getCreateReservationPath = (showingId: string): string => `/showings/${showingId}/reservations`
 

@@ -3,7 +3,7 @@ import isomorphicFetch from 'isomorphic-unfetch'
 import { PagedCollection } from '@/types/collection'
 import { Item } from '@/types/item'
 import { ENTRYPOINT } from '@/config/entrypoint'
-import type {ApiError as BaseApiError} from "cinema-next";
+import type {ApiError as BaseApiError} from "@damianchojnacki/cinema"
 
 const MIME_TYPE = 'application/ld+json'
 
@@ -49,14 +49,16 @@ export const fetch = async <TData>(
 ): Promise<FetchResponse<TData> | undefined> => {
   if (typeof init.headers === 'undefined') init.headers = {}
 
-  if (!Object.hasOwn(init.headers, 'Accept')) { init.headers = { ...init.headers, Accept: MIME_TYPE, 'X-Forwarded-Host': process.env.NEXT_PUBLIC_HOSTNAME } }
+  const hostname = process.env.NEXT_PUBLIC_HOSTNAME ?? 'localhost'
+
+  if (!Object.hasOwn(init.headers, 'Accept')) { init.headers = { ...init.headers, Accept: MIME_TYPE, 'X-Forwarded-Host': hostname } }
 
   if (
     init.body !== undefined &&
     !(init.body instanceof FormData) &&
     init.headers &&
     !Object.hasOwn(init.headers, 'Content-Type')
-  ) { init.headers = { ...init.headers, 'Content-Type': MIME_TYPE, 'X-Forwarded-Host': process.env.NEXT_PUBLIC_HOSTNAME } }
+  ) { init.headers = { ...init.headers, 'Content-Type': MIME_TYPE, 'X-Forwarded-Host': hostname } }
 
   const resp = await isomorphicFetch(ENTRYPOINT + id, init)
   if (resp.status === 204) return

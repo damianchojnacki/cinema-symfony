@@ -1,6 +1,6 @@
 import { fetch } from '@/utils/dataAccess'
 import { PagedCollection } from '@/types/collection'
-import { Entity } from 'cinema-next'
+import { Entity } from '@damianchojnacki/cinema'
 
 export const getMoviesPath = (page?: string): string =>
   `/movies${(Number(page) > 0) ? `?page=${page}` : ''}`
