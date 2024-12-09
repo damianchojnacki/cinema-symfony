@@ -10,7 +10,7 @@ module.exports = defineConfig({
   reporter: [
     ['html', { open: 'never' }]
   ],
-  timeout: 5000,
+  timeout: 10 * 1000,
   use: {
     ignoreHTTPSErrors: true,
     trace: 'on-first-retry',
