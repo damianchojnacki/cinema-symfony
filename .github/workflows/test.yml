@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - run: "export TMDB_API_KEY=${{secrets.TMDB_API_KEY}}"
       - name: Build Docker images
         uses: docker/bake-action@v4
         with:
@@ -29,7 +30,6 @@ jobs:
             compose.yaml
             compose.override.yaml
           set: |
-            php.secrets=TMDB_API_KEY=${{secrets.TMDB_API_KEY}}
             php.cache-from=type=gha,scope=php-${{github.ref}}
             php.cache-from=type=gha,scope=php-refs/heads/main
             php.cache-to=type=gha,scope=php-${{github.ref}},mode=max
