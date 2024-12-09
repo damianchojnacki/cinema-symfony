@@ -22,8 +22,6 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker images
         uses: docker/bake-action@v4
-        env:
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         with:
           pull: true
           load: true
@@ -31,6 +29,7 @@ jobs:
             compose.yaml
             compose.override.yaml
           set: |
+            php.secrets=TMDB_API_KEY=${{secrets.TMDB_API_KEY}}
             php.cache-from=type=gha,scope=php-${{github.ref}}
             php.cache-from=type=gha,scope=php-refs/heads/main
             php.cache-to=type=gha,scope=php-${{github.ref}},mode=max
