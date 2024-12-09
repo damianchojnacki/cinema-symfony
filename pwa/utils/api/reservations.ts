@@ -1,12 +1,10 @@
 import { fetch } from '@/utils/dataAccess'
-import { Reservation } from '@/types/Reservation'
+import { Entity, CreateReservationParams } from 'cinema-next'
 
 export const getCreateReservationPath = (showingId: string): string => `/showings/${showingId}/reservations`
 
-export type CreateReservationParams = Pick<Reservation, 'email' | 'seats'>
-
 export const createReservation = async (showingId: string, data: CreateReservationParams) =>
-  await fetch<Reservation>(getCreateReservationPath(showingId), {
+  await fetch<Entity.Reservation>(getCreateReservationPath(showingId), {
     method: 'POST',
     body: JSON.stringify(data)
   })

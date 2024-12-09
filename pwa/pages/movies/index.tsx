@@ -2,13 +2,9 @@ import { GetStaticProps, NextComponentType } from 'next'
 import { dehydrate, QueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { List } from '@/components/movie/List'
-import { Movie } from '@/types/Movie'
+import { Movie, Layout, Entity } from '@damianchojnacki/cinema'
 import { getMovies, getMoviesPath } from '@/utils/api/movies'
-import Layout from '@/components/common/Layout'
-import { useCurrentMovie } from '@/lib/hooks/useCurrentMovie'
-import { useEffect, useMemo } from 'react'
-import { Current } from '@/components/movie/Current'
+import { useMemo } from 'react'
 
 const PageList: NextComponentType = () => {
   const {
@@ -24,15 +20,7 @@ const PageList: NextComponentType = () => {
     getNextPageParam: (data) => data?.data?.view?.next?.split('?page=')[1]
   })
 
-  const movies = useMemo(() => data?.pages.flatMap((page) => page?.data?.member).filter((movie) => movie) as Movie[], [data])
-
-  const { update: selectCurrentMovie } = useCurrentMovie()
-
-  useEffect(() => {
-    if (!movies?.[0]) return
-
-    selectCurrentMovie(movies[0])
-  }, [movies])
+  const movies = useMemo(() => data?.pages.flatMap((page) => page?.data?.member).filter((movie) => movie) as Entity.Movie[], [data])
 
   if (!movies) return null
 
@@ -42,9 +30,7 @@ const PageList: NextComponentType = () => {
         <title>Currently playing</title>
       </Head>
 
-      <Current />
-
-      <List movies={movies} handleLoadNextPage={() => fetchNextPage} />
+      <Movie.CurrentlyPlaying movies={movies} handleLoadNextPage={() => void fetchNextPage()} />
     </Layout>
   )
 }

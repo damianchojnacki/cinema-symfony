@@ -7,12 +7,15 @@ module.exports = defineConfig({
   forbidOnly: !!process.env.CI,
   retries: 0,
   workers: 1,
-  reporter: 'html',
+  reporter: [
+    ['html', { open: 'never' }]
+  ],
+  timeout: 5000,
   use: {
     ignoreHTTPSErrors: true,
     trace: 'on-first-retry',
+    baseURL: 'http://localhost'
   },
-
   projects: [
     {
       name: 'chromium',

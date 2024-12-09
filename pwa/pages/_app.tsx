@@ -1,11 +1,11 @@
 import '../styles/globals.css'
-import QueryClientProvider from '../components/common/QueryClientProvider'
+import '@damianchojnacki/cinema/style.css'
 import type { AppProps } from 'next/app'
 import type { DehydratedState } from '@tanstack/react-query'
-import { RoutesContextProvider } from '@/lib/hooks/useRoutes'
 import { routes } from '@/utils/routes'
-import { ApiClientContextProvider } from '@/lib/hooks/useApiClient'
 import { client } from '@/utils/api/client'
+import QueryClientProvider from "@/components/common/QueryClientProvider";
+import {ApiClientContextProvider, RoutesContextProvider} from "@damianchojnacki/cinema";
 
 function MyApp ({ Component, pageProps }: AppProps<{ dehydratedState: DehydratedState }>) {
   return (

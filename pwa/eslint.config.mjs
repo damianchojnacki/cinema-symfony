@@ -6,49 +6,55 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default [
-  {
-    ignores: [
-      '.next/**',
-      'node_modules/**',
-      'tailwind.config.js',
-      'next.config.js',
-      'postcss.config.js',
-      'eslint.config.mjs',
-    ],
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx'],
-    plugins: {
-      react: reactPlugin,
-      'react-hooks': hooksPlugin,
-      '@next/next': nextPlugin,
+    {
+        ignores: [
+            '.next/**',
+            'external/**',
+            'node_modules/**',
+            'tailwind.config.js',
+            'next.config.js',
+            'postcss.config.js',
+            'eslint.config.mjs',
+        ],
     },
-    rules: {
-      ...reactPlugin.configs['jsx-runtime'].rules,
-      ...hooksPlugin.configs.recommended.rules,
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
-      '@next/next/no-img-element': 'off',
-      "react-hooks/exhaustive-deps": 'off'
+    {
+        files: ['**/*.ts', '**/*.tsx'],
+        plugins: {
+            react: reactPlugin,
+            'react-hooks': hooksPlugin,
+            '@next/next': nextPlugin,
+        },
+        rules: {
+            ...reactPlugin.configs['jsx-runtime'].rules,
+            ...hooksPlugin.configs.recommended.rules,
+            ...nextPlugin.configs.recommended.rules,
+            ...nextPlugin.configs['core-web-vitals'].rules,
+            '@next/next/no-img-element': 'off',
+            "react-hooks/exhaustive-deps": 'off'
+        },
     },
-  },
-  {
-    plugins: {
-      '@stylistic': stylistic
+    {
+        plugins: {
+            '@stylistic': stylistic
+        },
+        rules: {
+            '@stylistic/jsx-quotes': ['warn', 'prefer-double'],
+        }
     },
-    rules: {
-      '@stylistic/jsx-quotes': ['warn', 'prefer-double'],
+    {
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
+    eslint.configs.recommended,
+    ...tseslint.configs.recommendedTypeChecked,
+    ...tseslint.configs.stylisticTypeChecked,
+    {
+        rules: {
+            "@typescript-eslint/ban-ts-comment": "off"
+        }
     }
-  },
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
 ]

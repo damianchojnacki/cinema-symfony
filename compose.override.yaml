@@ -15,10 +15,15 @@ services:
       MERCURE_EXTRA_DIRECTIVES: demo
       # See https://xdebug.org/docs/all_settings#mode
       XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+      SERVER_NAME: 'http://localhost, http://php'
+      TMDB_API_KEY: '${TMDB_API_KEY}'
     extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
     tty: true
+    depends_on:
+      - database
+      - mailpit
 
   pwa:
     build:
@@ -27,10 +32,12 @@ services:
     volumes:
       - ./pwa:/srv/app
     environment:
+      NEXT_PUBLIC_ENTRYPOINT: http://php
+      NEXT_PUBLIC_HOSTNAME: localhost
       API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://php
       API_PLATFORM_CREATE_CLIENT_OUTPUT: .
       # On Linux, you may want to comment the following line for improved performance
-      WATCHPACK_POLLING: "true"
+      # WATCHPACK_POLLING: "true"
 
 ###> doctrine/doctrine-bundle ###
   database:

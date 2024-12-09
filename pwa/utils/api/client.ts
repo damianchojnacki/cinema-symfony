@@ -1,5 +1,5 @@
 import { createReservation } from '@/utils/api/reservations'
-import { Client } from '@/lib/hooks/useApiClient'
+import { Client } from 'cinema-next'
 
 export const client: Client = {
   createReservation: async (showingId, data) => {

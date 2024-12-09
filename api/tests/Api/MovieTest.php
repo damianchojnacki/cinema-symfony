@@ -2,6 +2,7 @@
 
 namespace App\Tests\Api;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Movie;
 use App\Factory\MovieFactory;
@@ -16,7 +17,7 @@ class MovieTest extends ApiTestCase
 
     protected Storage $storage;
 
-    protected FrontendUrlGenerator $urlGenerator;
+    protected UrlGeneratorInterface $urlGenerator;
 
     protected function setUp(): void
     {
@@ -25,7 +26,7 @@ class MovieTest extends ApiTestCase
         $this->storage = self::getContainer()->get(Storage::class);
         $this->storage->fake();
 
-        $this->urlGenerator = self::getContainer()->get(FrontendUrlGenerator::class);
+        $this->urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
     }
 
     public function test_list_movies(): void
@@ -65,8 +66,12 @@ class MovieTest extends ApiTestCase
             'title' => $movie->title,
             'description' => $movie->description,
             'rating' => $movie->rating,
-            'poster_url' => $this->urlGenerator->path($movie->poster_path),
-            'backdrop_url' => $this->urlGenerator->path($movie->backdrop_path),
+            'poster_url' => $this->urlGenerator->generate('image_show', [
+                'path' => $movie->poster_path,
+            ], UrlGeneratorInterface::ABSOLUTE_URL),
+            'backdrop_url' => $this->urlGenerator->generate('image_show', [
+                'path' => $movie->backdrop_path,
+            ], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
         $this->assertMatchesResourceItemJsonSchema(Movie::class);
     }

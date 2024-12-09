@@ -5,7 +5,6 @@ import {
 } from 'next'
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
 import { PagedCollection } from '@/types/collection'
-import { Movie } from '@/types/Movie'
 import { fetch, getItemPaths } from '@/utils/dataAccess'
 import { getShowings, getShowingsPath } from '@/utils/api/showings'
 import { getMovie, getMoviePath } from '@/utils/api/movies'
@@ -13,8 +12,7 @@ import { Item } from '@/types/item'
 import { useRouter } from 'next/router'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
-import Layout from '@/components/common/Layout'
-import { UpcomingShowings } from '@/components/showing/UpcomingShowings'
+import {Layout, Showing} from '@damianchojnacki/cinema'
 
 const PageList: NextComponentType = () => {
   const { query: {id} } = useRouter()
@@ -41,7 +39,7 @@ const PageList: NextComponentType = () => {
         <title>{`Upcoming showings - ${movie.title}`}</title>
       </Head>
 
-      <UpcomingShowings movie={movie} showings={showings?.member ?? []} />
+      <Showing.UpcomingShowings movie={movie} showings={showings?.member ?? []} />
     </Layout>
   )
 }
@@ -75,7 +73,7 @@ export const getStaticProps: GetStaticProps = async ({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const response = await fetch<PagedCollection<Movie & Item>>('/movies')
+  const response = await fetch<PagedCollection<Item>>('/movies')
   const paths = await getItemPaths(response, 'movies', '/movies/[id]/showings')
 
   return {

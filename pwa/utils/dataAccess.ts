@@ -3,6 +3,7 @@ import isomorphicFetch from 'isomorphic-unfetch'
 import { PagedCollection } from '@/types/collection'
 import { Item } from '@/types/item'
 import { ENTRYPOINT } from '@/config/entrypoint'
+import type {ApiError as BaseApiError} from "cinema-next";
 
 const MIME_TYPE = 'application/ld+json'
 
@@ -17,10 +18,20 @@ export interface FetchResponse<TData> {
   text: string
 }
 
-export interface FetchError {
-  message: string
-  status: string
-  fields: Record<string, string>
+export interface SymfonyError {
+  title: string
+  description?: string
+  violations?: Violation[]
+}
+
+class ApiError extends Error implements BaseApiError {
+  public response: BaseApiError['response'] = undefined
+
+  constructor(message: string, response: BaseApiError['response']) {
+    super(message);
+
+    this.response = response
+  }
 }
 
 const extractHubURL = (response: Response): null | URL => {
@@ -38,38 +49,50 @@ export const fetch = async <TData>(
 ): Promise<FetchResponse<TData> | undefined> => {
   if (typeof init.headers === 'undefined') init.headers = {}
 
-  if (!Object.hasOwn(init.headers, 'Accept')) { init.headers = { ...init.headers, Accept: MIME_TYPE } }
+  if (!Object.hasOwn(init.headers, 'Accept')) { init.headers = { ...init.headers, Accept: MIME_TYPE, 'X-Forwarded-Host': process.env.NEXT_PUBLIC_HOSTNAME } }
 
   if (
     init.body !== undefined &&
     !(init.body instanceof FormData) &&
     init.headers &&
     !Object.hasOwn(init.headers, 'Content-Type')
-  ) { init.headers = { ...init.headers, 'Content-Type': MIME_TYPE } }
+  ) { init.headers = { ...init.headers, 'Content-Type': MIME_TYPE, 'X-Forwarded-Host': process.env.NEXT_PUBLIC_HOSTNAME } }
 
   const resp = await isomorphicFetch(ENTRYPOINT + id, init)
   if (resp.status === 204) return
 
-  const text = await resp.text()
-  const json = JSON.parse(text)
+  const json = await resp.json() as TData & Item | SymfonyError
+
   if (resp.ok) {
     return {
-      hubURL: extractHubURL(resp)?.toString() || null, // URL cannot be serialized as JSON, must be sent as string
-      data: json,
-      text
+      hubURL: extractHubURL(resp)?.toString() ?? null,
+      data: json as TData & Item,
+      text: JSON.stringify(json)
     }
   }
 
-  const errorMessage = json.title
-  const status = json.description || resp.statusText
-  if (!json.violations) throw Error(errorMessage)
-  const fields: Record<string, string> = {}
-  json.violations.map(
+  const error = json as SymfonyError
+
+  const errorMessage = error.title
+  const status = error.description ?? resp.statusText
+
+  if (!error.violations) {
+    throw new Error(errorMessage)
+  }
+
+  const errors: Record<string, string> = {}
+
+  error.violations.map(
     (violation: Violation) =>
-      (fields[violation.propertyPath] = violation.message)
+      (errors[violation.propertyPath] = violation.message)
   )
 
-  throw { message: errorMessage, status, fields } as FetchError
+  throw new ApiError(errorMessage, {
+    data: {
+      message: status,
+      errors
+    }
+  })
 }
 
 export const getItemPath = (
