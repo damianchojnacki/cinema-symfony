@@ -25,7 +25,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 
 # Development image
-FROM base as dev
+FROM base AS dev
 
 EXPOSE 3000
 ENV PORT 3000
@@ -35,6 +35,10 @@ CMD ["sh", "-c", "pnpm install; pnpm dev"]
 
 
 FROM base AS builder
+
+ARG NEXT_PUBLIC_ENTRYPOINT
+
+ENV NEXT_PUBLIC_ENTRYPOINT ${NEXT_PUBLIC_ENTRYPOINT}
 
 COPY --link pnpm-lock.yaml ./
 RUN pnpm fetch --prod

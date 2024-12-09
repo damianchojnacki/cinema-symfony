@@ -8,6 +8,7 @@ services:
       APP_SECRET: ${APP_SECRET}
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
+      ports: []
 
   pwa:
     build:
@@ -16,6 +17,8 @@ services:
       network: host
       extra_hosts:
         - "php=127.0.0.1"
+      args:
+        - NEXT_PUBLIC_ENTRYPOINT=http://php
 
   database:
     environment:
