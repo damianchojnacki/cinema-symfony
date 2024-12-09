@@ -4,6 +4,10 @@ services:
     build:
       context: ./api
       target: frankenphp_dev
+    ports:
+      - target: 80
+        published: ${HTTP_PORT:-80}
+        protocol: tcp
     volumes:
       - ./api:/app
       - ./api/frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
