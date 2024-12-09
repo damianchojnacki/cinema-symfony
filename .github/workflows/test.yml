@@ -20,7 +20,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - run: "export TMDB_API_KEY=${{secrets.TMDB_API_KEY}}"
       - name: Build Docker images
         uses: docker/bake-action@v4
         with:
@@ -56,6 +55,10 @@ jobs:
         run: docker compose exec -T php bin/phpunit
       - name: Run ESLint
         run: docker compose exec -T pwa pnpm lint
+      - name: Set secrets
+        run: |
+          docker compose exec -T php bin/console secrets:generate-keys
+          echo -n "${{secrets.TMDB_API_KEY}}" | docker compose exec -T php bin/console secrets:set TMDB_API_KEY -
       - name: Load fixtures
         run: docker compose exec -T php bin/console doctrine:fixtures:load --no-interaction
       - name: Cache Playwright Binaries
