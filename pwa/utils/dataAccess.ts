@@ -60,6 +60,8 @@ export const fetch = async <TData>(
     !Object.hasOwn(init.headers, 'Content-Type')
   ) { init.headers = { ...init.headers, 'Content-Type': MIME_TYPE, 'X-Forwarded-Host': hostname } }
 
+  console.log('Request to: ' + ENTRYPOINT + id)
+
   const resp = await isomorphicFetch(ENTRYPOINT + id, init)
   if (resp.status === 204) return
 
@@ -69,7 +71,7 @@ export const fetch = async <TData>(
   try {
     json = JSON.parse(data) as TData & Item | SymfonyError
   } catch (e) {
-    console.error('Cannot parse JSON:')
+    console.error('ERROR - Cannot parse JSON:')
     console.error(data)
   }
 
