@@ -35,12 +35,12 @@
         "symfony/serializer": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "symfony/yaml": "6.4.*",
+        "doctrine/doctrine-fixtures-bundle": "^3.6"
     },
     "require-dev": {
         "api-platform/schema-generator": "^5.0",
         "dama/doctrine-test-bundle": "^8.2",
-        "doctrine/doctrine-fixtures-bundle": "^3.6",
         "justinrainbow/json-schema": "^5.3",
         "laravel/pint": "^1.18",
         "phpstan/extension-installer": "^1.4",
