@@ -16,6 +16,8 @@ class Storage
     {
         $this->storageDir = 'storage/fake/';
 
+        $this->filesystem()->mkdir($this->root());
+
         $this->purge();
 
         return $this;
