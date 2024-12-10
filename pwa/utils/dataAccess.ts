@@ -63,12 +63,14 @@ export const fetch = async <TData>(
   const resp = await isomorphicFetch(ENTRYPOINT + id, init)
   if (resp.status === 204) return
 
+  const data = await resp.text()
   let json = {}
 
   try {
-    json = await resp.json() as TData & Item | SymfonyError
+    json = JSON.parse(data) as TData & Item | SymfonyError
   } catch (e) {
-    console.error(await resp.text())
+    console.error('Cannot parse JSON:')
+    console.error(data)
   }
 
   if (resp.ok) {
