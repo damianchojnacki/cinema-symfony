@@ -68,7 +68,7 @@ export const fetch = async <TData>(
 
   try {
     json = JSON.parse(data) as TData & Item | SymfonyError
-  } catch (e) {
+  } catch {
     console.error('Request to: ' + ENTRYPOINT + id)
     console.error('ERROR - Cannot parse JSON:')
     console.error(data)
