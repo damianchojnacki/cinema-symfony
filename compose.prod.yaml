@@ -8,14 +8,21 @@ services:
       APP_SECRET: ${APP_SECRET}
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
+    networks:
+      - api
 
   pwa:
     build:
       context: ./pwa
       target: prod
+      network: api
       args:
         - NEXT_PUBLIC_ENTRYPOINT=http://php
 
   database:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+networks:
+  api:
+    driver: bridge
