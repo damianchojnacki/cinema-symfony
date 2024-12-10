@@ -15,7 +15,7 @@ services:
       target: prod
       network: host
       extra_hosts:
-        - "php=${SERVER_NAME}"
+        - "php=${NEXT_PUBLIC_HOSTNAME}"
       args:
         - NEXT_PUBLIC_ENTRYPOINT=http://php
 
