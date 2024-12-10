@@ -13,11 +13,8 @@ services:
     build:
       context: ./pwa
       target: prod
-      network: host
-      extra_hosts:
-        - "php=${NEXT_PUBLIC_HOSTNAME}"
       args:
-        - NEXT_PUBLIC_ENTRYPOINT=http://php
+        - NEXT_PUBLIC_ENTRYPOINT=${SERVER_NAME}
 
   database:
     environment:
