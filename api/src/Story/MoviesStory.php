@@ -23,9 +23,7 @@ final class MoviesStory extends Story
 
     public function build(): void
     {
-        $filesystem = new Filesystem;
-
-        $filesystem->remove($this->storage->root());
+        $this->storage->purge();
 
         $application = new Application($this->kernel);
         $application->setAutoExit(false);

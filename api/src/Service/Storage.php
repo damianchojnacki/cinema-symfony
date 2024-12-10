@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Kernel;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class Storage
 {
@@ -15,7 +16,7 @@ class Storage
     {
         $this->storageDir = 'storage/fake/';
 
-        $this->filesystem()->remove($this->root());
+        $this->purge();
 
         return $this;
     }
@@ -33,6 +34,17 @@ class Storage
     public function root(): string
     {
         return $this->kernel->getProjectDir() . '/' . $this->storageDir;
+    }
+
+    public function purge(): void
+    {
+        $finder = new Finder();
+
+        $finder->depth(0)->in($this->root());
+
+        foreach ($finder as $file) {
+             $this->filesystem()->remove($file->getRealPath());
+        }
     }
 
     public function filesystem(): Filesystem
