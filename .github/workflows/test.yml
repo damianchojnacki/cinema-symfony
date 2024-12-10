@@ -61,11 +61,11 @@ jobs:
           echo -n "${{secrets.TMDB_API_KEY}}" | docker compose exec -T php bin/console secrets:set TMDB_API_KEY -
       - name: Load fixtures
         run: docker compose exec -T php bin/console doctrine:fixtures:load --no-interaction
-      - name: Cache Playwright Binaries
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright
+#      - name: Cache Playwright Binaries
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.cache/ms-playwright
+#          key: ${{ runner.os }}-playwright
       - name: Install PNPM
         uses: pnpm/action-setup@v4
         with:
