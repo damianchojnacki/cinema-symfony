@@ -40,12 +40,12 @@ class Storage
 
     public function purge(): void
     {
-        $finder = new Finder();
+        $finder = new Finder;
 
         $finder->depth(0)->in($this->root());
 
         foreach ($finder as $file) {
-             $this->filesystem()->remove($file->getRealPath());
+            $this->filesystem()->remove($file->getRealPath());
         }
     }
 
