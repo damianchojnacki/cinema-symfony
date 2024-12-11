@@ -1,47 +1,152 @@
 <h1 align="center"><a href="https://api-platform.com"><img src="https://api-platform.com/images/logos/Logo_Circle%20webby%20text%20blue.png" alt="API Platform" width="250" height="250"></a></h1>
 
-API Platform is a next-generation web framework designed to easily create API-first projects without compromising extensibility
-and flexibility:
+# Cinema (Symfony)
 
-* Design your own data model as plain old PHP classes or [**import an existing ontology**](https://api-platform.com/docs/schema-generator).
-* **Expose in minutes a hypermedia REST or a GraphQL API** with pagination, data validation, access control, relation embedding,
-  filters, and error handling...
-* Benefit from Content Negotiation: [GraphQL](https://api-platform.com/docs/core/graphql/), [JSON-LD](https://json-ld.org), [Hydra](https://hydra-cg.com),
-  [HAL](https://github.com/mikekelly/hal_specification/blob/master/hal_specification.md), [JSON:API](https://jsonapi.org/), [YAML](https://yaml.org/), [JSON](https://www.json.org/), [XML](https://www.w3.org/XML/) and [CSV](https://www.ietf.org/rfc/rfc4180.txt) are supported out of the box.
-* Enjoy the **beautiful automatically generated API documentation** ([OpenAPI](https://api-platform.com/docs/core/openapi/)).
-* Add [**a convenient Material Design administration interface**](https://api-platform.com/docs/admin) built with [React](https://reactjs.org/)
-  without writing a line of code.
-* **Scaffold fully functional Progressive-Web-Apps and mobile apps** built with [Next.js](https://api-platform.com/docs/client-generator/nextjs/) (React),
-[Nuxt.js](https://api-platform.com/docs/client-generator/nuxtjs/) (Vue.js) or [React Native](https://api-platform.com/docs/client-generator/react-native/)
-thanks to [the client generator](https://api-platform.com/docs/client-generator/) (a Vue.js generator is also available).
-* Install a development environment and deploy your project in production using **[Docker](https://api-platform.com/docs/distribution)**
-and [Kubernetes](https://api-platform.com/docs/deployment/kubernetes).
-* Easily add **[OAuth](https://oauth.net/) authentication**.
-* Create specs and tests with **[a developer friendly API testing tool](https://api-platform.com/docs/distribution/testing/)**.
+Cinema is a modern web application for browsing movies currently playing in theaters. The app offering a rich user experience with a seamless combination of backend and frontend technologies.
 
-The official project documentation is available **[on the API Platform website](https://api-platform.com)**.
+## Features
 
-API Platform embraces open web standards and the
-[Linked Data](https://www.w3.org/standards/semanticweb/data) movement. Your API will automatically expose structured data.
-It means that your API Platform application is usable **out of the box** with technologies of
-the semantic web.
+- Browse movies playing in theaters with data fetched from the TMDB API.
+- Responsive and user-friendly design powered by Next.js and TailwindCSS.
+- Backend API built with Symfony and API Platform.
+- Component-based architecture using `@damianchojnacki/cinema` library.
+- Fully containerized setup for development and production using Docker.
+- Continuous Integration (CI) pipeline with GitHub Actions.
 
-It also means that **your SEO will be improved** because **[Google leverages these formats](https://developers.google.com/search/docs/guides/intro-structured-data)**.
+## Technologies Used
 
-Last but not least, the server component of API Platform is built on top of the [Symfony](https://symfony.com) framework,
-while client components leverage [React](https://reactjs.org/) ([Vue.js](https://vuejs.org/) flavors are also available).
-It means that you can:
+### Backend
+- **PHP 8.3** with Symfony 6.
+- **API Platform 4** for building a robust REST API.
+- **PHPStan** and **PHPUnit** for static analysis and testing.
+- **Laravel Pint** and **ESLint** for code linting.
 
-* Use **thousands of Symfony bundles and React components** with API Platform.
-* Integrate API Platform in **any existing Symfony, React, or Vue application**.
-* Reuse **all your Symfony and JavaScript skills**, and benefit from the incredible amount of documentation available.
-* Enjoy the popular [Doctrine ORM](https://www.doctrine-project.org/projects/orm.html) (used by default, but fully optional:
-  you can use the data provider you want, including but not limited to MongoDB and Elasticsearch)
+### Frontend
+- **Next.js** for server-rendered React applications.
+- **TailwindCSS** for styling.
+- **ESLint** for JavaScript/TypeScript linting.
+- **Playwright** for end-to-end testing.
+- **@damianchojnacki/cinema**: A reusable component library used across the application.
 
-## Install
+### Infrastructure
+- **Docker** and **Docker Compose** for development and production environments.
+- **GitHub Actions** for CI, running tests and linters.
 
-[Read the official "Getting Started" guide](https://api-platform.com/docs/distribution/).
+## Project Structure
 
-## Credits
+```plaintext
+.
+├── api/               # Symfony backend
+├── pwa/               # Next.js frontend
+├── e2e/               # E2E tests
+```
 
-Created by [Kévin Dunglas](https://dunglas.fr). Commercial support is available at [Les-Tilleuls.coop](https://les-tilleuls.coop).
+## Setup Instructions
+
+### Prerequisites
+
+- Docker and Docker Compose installed.
+
+### Development
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/cinema.git
+   cd cinema
+   ```
+
+2. **Start the development environment:**
+   ```bash
+   docker-compose up --build
+   ```
+
+3. **Populate the database**
+   ```bash
+   docker compose exec php bin/console doctrine:fixtures:load
+   ```
+
+4. **Access the application:**
+    - API Docs: `http://localhost/docs`
+    - App: `http://localhost`
+
+### Testing
+
+- **Backend tests:**
+    ```bash
+    docker-compose exec php bin/phpunit
+    ```
+
+- **Frontend tests:**
+    ```bash
+    docker run --network host -w /app -v ./e2e:/app --rm --ipc=host mcr.microsoft.com/playwright:v1.48.1-noble /bin/sh -c 'pnpm i; pnpm playwright test;'
+    ```
+
+- **Static analysis (PHPStan, ESLint):**
+    ```bash
+    docker-compose exec php vendor/bin/phpstan --memory-limit=2G
+    docker compose exec pwa pnpm lint
+    ```
+
+### Deploying to production
+
+1. Fill the required env:
+- APP_SECRET
+- CADDY_MERCURE_JWT_SECRET (must be 256 bit)
+- CADDY_MERCURE_PUBLIC_URL
+- CADDY_MERCURE_URL
+- NEXT_PUBLIC_HOSTNAME
+- POSTGRES_PASSWORD
+- SERVER_NAME
+- TMDB_API_KEY
+- TRUSTED_HOSTS
+- TRUSTED_PROXIES
+
+The API must be accessible during frontend build, so we need to build and start backend first.
+
+2. **Build:**
+    ```bash
+    docker compose -f compose.yaml -f compose.prod.yaml up -d --build --wait php && \
+    docker compose -f compose.yaml -f compose.prod.yaml build pwa
+    ```
+
+3. **Start:**
+    ```bash
+    docker compose -f compose.yaml -f compose.prod.yaml up -d --wait
+    ```
+
+### Note for deploying on Coolify
+
+Let's assume that url address is https://cinema-symfony.damianchojnacki.com.
+
+1. Create new Git project and set Docker Compose option for build pack.
+2. In "Domains for Php" field type https://cinema-symfony.damianchojnacki.com:80.
+3. Fill Custom build command and custom start command with these from previous section.
+4. Set Environment Variables:
+- CADDY_MERCURE_PUBLIC_URL -> https://cinema-symfony.damianchojnacki.com
+- NEXT_PUBLIC_HOSTNAME -> cinema-symfony.damianchojnacki.com
+- SERVER_NAME -> http://cinema-symfony.damianchojnacki.com
+- TRUSTED_HOSTS -> ^cinema-symfony.damianchojnacki.com|php$
+5. Before deploy, you should stop currently running application. 
+Next - find a network name in Docker Compose content generated by Coolify and
+create this network manually because Coolify will not created it automatically:
+    ```bash
+    docker network create NETWORK_NAME
+    ```
+6. Deploy 🎉
+
+## CI/CD
+
+The project uses GitHub Actions for automated testing and linting:
+
+- **Backend CI Pipeline:**
+    - PHPStan for static analysis.
+    - PHPUnit for unit tests.
+    - Laravel Pint for code linting.
+
+- **Frontend CI Pipeline:**
+    - ESLint for linting.
+    - Playwright for end-to-end tests.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
