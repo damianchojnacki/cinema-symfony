@@ -2,9 +2,10 @@ import { GetStaticProps, NextComponentType } from 'next'
 import { dehydrate, QueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { Movie, Layout, Entity } from '@damianchojnacki/cinema'
+import { Movie, Entity } from '@damianchojnacki/cinema'
 import { getMovies, getMoviesPath } from '@/utils/api/movies'
 import { useMemo } from 'react'
+import Layout from "@/components/Layout";
 
 const PageList: NextComponentType = () => {
   const {
@@ -28,6 +29,7 @@ const PageList: NextComponentType = () => {
     <Layout>
       <Head>
         <title>Currently playing</title>
+        <meta name="apple-mobile-web-app-title" content="Cinema"/>
       </Head>
 
       <Movie.CurrentlyPlaying movies={movies} handleLoadNextPage={() => void fetchNextPage()} />

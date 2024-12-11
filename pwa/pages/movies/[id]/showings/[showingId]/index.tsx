@@ -8,8 +8,9 @@ import { useRouter } from 'next/router'
 import {dehydrate, QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 import { useMercure } from '@/utils/mercure'
 import { getShowing, getShowingPath } from '@/utils/api/showings'
-import {Layout, Reservation} from '@damianchojnacki/cinema'
+import {Reservation} from '@damianchojnacki/cinema'
 import { getMovie, getMoviePath } from '@/utils/api/movies'
+import Layout from "@/components/Layout";
 
 const Page: NextComponentType = () => {
   const { query: { id, showingId } } = useRouter()
