@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
-import {Layout as BaseLayout} from '@damianchojnacki/cinema'
+import { Layout as BaseLayout } from '@damianchojnacki/cinema'
 
 const Layout = ({
   children,

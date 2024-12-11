@@ -3,7 +3,7 @@ import isomorphicFetch from 'isomorphic-unfetch'
 import { PagedCollection } from '@/types/collection'
 import { Item } from '@/types/item'
 import { ENTRYPOINT } from '@/config/entrypoint'
-import type {ApiError as BaseApiError} from "@damianchojnacki/cinema"
+import type { ApiError as BaseApiError } from "@damianchojnacki/cinema"
 
 const MIME_TYPE = 'application/ld+json'
 

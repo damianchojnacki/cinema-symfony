@@ -39,6 +39,7 @@ export default [
         },
         rules: {
             '@stylistic/jsx-quotes': ['warn', 'prefer-double'],
+            '@stylistic/object-curly-spacing': ['warn', 'always'],
         }
     },
     {
@@ -54,7 +55,7 @@ export default [
     ...tseslint.configs.stylisticTypeChecked,
     {
         rules: {
-            "@typescript-eslint/ban-ts-comment": "off"
+            "@typescript-eslint/ban-ts-comment": "off",
         }
     }
 ]
