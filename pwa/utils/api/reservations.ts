@@ -6,5 +6,5 @@ export const getCreateReservationPath = (showingId: string): string => `/showing
 export const createReservation = async (showingId: string, data: CreateReservationParams) =>
   await fetch<Entity.Reservation>(getCreateReservationPath(showingId), {
     method: 'POST',
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })

@@ -5,7 +5,7 @@ import { Item, isItem } from '@/types/item'
 const mercureSubscribe = <T extends Item | PagedCollection<Item> | undefined>(
   hubURL: string,
   data: T | PagedCollection<T>,
-  setData: (data: T) => void
+  setData: (data: T) => void,
 ) => {
   if (!data?.['@id']) throw new Error('@id is missing')
 
@@ -13,24 +13,24 @@ const mercureSubscribe = <T extends Item | PagedCollection<Item> | undefined>(
 
   url.searchParams.append(
     'topic',
-    new URL(data['@id'], window.origin).toString()
+    new URL(data['@id'], window.origin).toString(),
   )
 
   const eventSource = new EventSource(url.toString())
 
   eventSource.addEventListener('message', (event: MessageEvent<string>) =>
-    setData(JSON.parse(event.data) as T)
+    setData(JSON.parse(event.data) as T),
   )
 
   return eventSource
 }
 
 export const useMercure = <
-  TData extends Item | PagedCollection<Item> | undefined
+  TData extends Item | PagedCollection<Item> | undefined,
 >(
-    deps: TData,
-    hubURL: string | null
-  ): TData => {
+  deps: TData,
+  hubURL: string | null,
+): TData => {
   const [data, setData] = useState(deps)
 
   useEffect(() => {
@@ -49,9 +49,7 @@ export const useMercure = <
     }
 
     if (
-      isPagedCollection<Item>(data) &&
-      (data.member != null) &&
-      data.member.length !== 0
+      isPagedCollection<Item>(data) && (data.member != null) && data.member.length !== 0
     ) {
       const eventSources: EventSource[] = []
       // It's a PagedCollection
@@ -62,13 +60,11 @@ export const useMercure = <
               data.member[pos] = datum
             }
             setData({ ...data })
-          })
+          }),
         )
       })
 
-      return () => {
-        eventSources.forEach((eventSource) => eventSource.close())
-      }
+      return () => eventSources.forEach((eventSource) => eventSource.close())
     }
 
     // It's a single object

@@ -5,11 +5,11 @@ import Head from 'next/head'
 import { Movie, Entity } from '@damianchojnacki/cinema'
 import { getMovies, getMoviesPath } from '@/utils/api/movies'
 import { useMemo } from 'react'
-import Layout from "@/components/Layout";
+import Layout from '@/components/Layout'
 
 const PageList: NextComponentType = () => {
   const {
-    query
+    query,
   } = useRouter()
 
   const page = Array.isArray(query.page) ? undefined : query.page
@@ -18,7 +18,7 @@ const PageList: NextComponentType = () => {
     queryFn: async ({ pageParam }) => await getMovies(pageParam),
     queryKey: [getMoviesPath(page)],
     initialPageParam: page ?? '1',
-    getNextPageParam: (data) => data?.data?.view?.next?.split('?page=')[1]
+    getNextPageParam: (data) => data?.data?.view?.next?.split('?page=')[1],
   })
 
   const movies = useMemo(() => data?.pages.flatMap((page) => page?.data?.member).filter((movie) => movie) as Entity.Movie[], [data])
@@ -29,7 +29,6 @@ const PageList: NextComponentType = () => {
     <Layout>
       <Head>
         <title>Currently playing</title>
-        <meta name="apple-mobile-web-app-title" content="Cinema"/>
       </Head>
 
       <Movie.CurrentlyPlaying movies={movies} handleLoadNextPage={() => void fetchNextPage()} />
@@ -45,13 +44,13 @@ export const getStaticProps: GetStaticProps = async () => {
     queryFn: async ({ pageParam }) => await getMovies(pageParam),
     initialPageParam: '1',
     getNextPageParam: (data) => data?.data.view?.next?.split('?page=')[1],
-    pages: 1
+    pages: 1,
   })
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient)
-    }
+      dehydratedState: dehydrate(queryClient),
+    },
   }
 }
 

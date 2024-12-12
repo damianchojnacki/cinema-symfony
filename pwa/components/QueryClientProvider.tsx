@@ -3,12 +3,12 @@ import {
   DehydratedState,
   HydrationBoundary,
   QueryClient,
-  QueryClientProvider as ReactQueryClientProvider
+  QueryClientProvider as ReactQueryClientProvider,
 } from '@tanstack/react-query'
 
 const QueryClientProvider = ({
   children,
-  dehydratedState
+  dehydratedState,
 }: {
   children: ReactNode
   dehydratedState: DehydratedState

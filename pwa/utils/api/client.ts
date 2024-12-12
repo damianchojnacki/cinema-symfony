@@ -10,5 +10,5 @@ export const client: Client = {
     }
 
     return response.data
-  }
+  },
 }

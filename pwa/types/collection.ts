@@ -2,16 +2,16 @@ export interface PagedCollection<T> {
   '@context'?: string
   '@id'?: string
   '@type'?: string
-  member?: T[]
-  search?: Record<string, unknown>
-  totalItems?: number
-  view?: {
+  'member'?: T[]
+  'search'?: Record<string, unknown>
+  'totalItems'?: number
+  'view'?: {
     '@id': string
     '@type': string
-    first?: string
-    last?: string
-    previous?: string
-    next?: string
+    'first'?: string
+    'last'?: string
+    'previous'?: string
+    'next'?: string
   }
 }
 

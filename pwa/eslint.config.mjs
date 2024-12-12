@@ -33,15 +33,13 @@ export default [
             "react-hooks/exhaustive-deps": 'off'
         },
     },
-    {
-        plugins: {
-            '@stylistic': stylistic
-        },
-        rules: {
-            '@stylistic/jsx-quotes': ['warn', 'prefer-double'],
-            '@stylistic/object-curly-spacing': ['warn', 'always'],
-        }
-    },
+    stylistic.configs.customize({
+        indent: 2,
+        quotes: 'single',
+        semi: false,
+        jsx: true,
+        arrowParens: true,
+    }),
     {
         languageOptions: {
             parserOptions: {
@@ -56,6 +54,8 @@ export default [
     {
         rules: {
             "@typescript-eslint/ban-ts-comment": "off",
+            '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
+            '@stylistic/operator-linebreak': ['error', 'none'],
         }
     }
 ]

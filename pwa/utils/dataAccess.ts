@@ -3,7 +3,7 @@ import isomorphicFetch from 'isomorphic-unfetch'
 import { PagedCollection } from '@/types/collection'
 import { Item } from '@/types/item'
 import { ENTRYPOINT } from '@/config/entrypoint'
-import type { ApiError as BaseApiError } from "@damianchojnacki/cinema"
+import type { ApiError as BaseApiError } from '@damianchojnacki/cinema'
 
 const MIME_TYPE = 'application/ld+json'
 
@@ -28,7 +28,7 @@ class ApiError extends Error implements BaseApiError {
   public response: BaseApiError['response'] = undefined
 
   constructor(message: string, response: BaseApiError['response']) {
-    super(message);
+    super(message)
 
     this.response = response
   }
@@ -45,19 +45,18 @@ const extractHubURL = (response: Response): null | URL => {
 
 export const fetch = async <TData>(
   id: string,
-  init: RequestInit = {}
+  init: RequestInit = {},
 ): Promise<FetchResponse<TData> | undefined> => {
   if (typeof init.headers === 'undefined') init.headers = {}
 
   const hostname = process.env.NEXT_PUBLIC_HOSTNAME ?? 'localhost'
 
-  if (!Object.hasOwn(init.headers, 'Accept')) { init.headers = { ...init.headers, Accept: MIME_TYPE, 'X-Forwarded-Host': hostname } }
+  if (!Object.hasOwn(init.headers, 'Accept')) {
+    init.headers = { ...init.headers, 'Accept': MIME_TYPE, 'X-Forwarded-Host': hostname }
+  }
 
   if (
-    init.body !== undefined &&
-    !(init.body instanceof FormData) &&
-    init.headers &&
-    !Object.hasOwn(init.headers, 'Content-Type')
+    init.body !== undefined && !(init.body instanceof FormData) && init.headers && !Object.hasOwn(init.headers, 'Content-Type')
   ) { init.headers = { ...init.headers, 'Content-Type': MIME_TYPE, 'X-Forwarded-Host': hostname } }
 
   const resp = await isomorphicFetch(ENTRYPOINT + id, init)
@@ -78,7 +77,7 @@ export const fetch = async <TData>(
     return {
       hubURL: extractHubURL(resp)?.toString() ?? null,
       data: json as TData & Item,
-      text: JSON.stringify(json)
+      text: JSON.stringify(json),
     }
   }
 
@@ -95,20 +94,20 @@ export const fetch = async <TData>(
 
   error.violations.map(
     (violation: Violation) =>
-      (errors[violation.propertyPath] = violation.message)
+      (errors[violation.propertyPath] = violation.message),
   )
 
   throw new ApiError(errorMessage, {
     data: {
       message: status,
-      errors
-    }
+      errors,
+    },
   })
 }
 
 export const getItemPath = (
   iri: string | undefined,
-  pathTemplate: string
+  pathTemplate: string,
 ): string => {
   if (!iri) {
     return ''
@@ -122,23 +121,22 @@ export const getItemPath = (
 export const parsePage = (resourceName: string, path: string) =>
   parseInt(
     new RegExp(`^/${resourceName}\\?page=(\\d+)`).exec(path)?.[1] ?? '1',
-    10
+    10,
   )
 
 export const getItemPaths = async <TData extends Item>(
   response: FetchResponse<PagedCollection<TData>> | undefined,
   resourceName: string,
-  pathTemplate: string
+  pathTemplate: string,
 ) => {
   if (response == null) return []
 
   try {
     const view = response.data.view
     const { last } = view ?? {}
-    const paths =
-      response.data.member?.map((resourceData) =>
-        getItemPath(resourceData['@id'] ?? '', pathTemplate)
-      ) ?? []
+    const paths = response.data.member?.map((resourceData) =>
+      getItemPath(resourceData['@id'] ?? '', pathTemplate),
+    ) ?? []
     const lastPage = parsePage(resourceName, last ?? '')
 
     for (let page = 2; page <= lastPage; page++) {
@@ -146,8 +144,8 @@ export const getItemPaths = async <TData extends Item>(
         ...((
           await fetch<PagedCollection<TData>>(`/${resourceName}?page=${page}`)
         )?.data.member?.map((resourceData) =>
-          getItemPath(resourceData['@id'] ?? '', pathTemplate)
-        ) ?? [])
+          getItemPath(resourceData['@id'] ?? '', pathTemplate),
+        ) ?? []),
       )
     }
 
